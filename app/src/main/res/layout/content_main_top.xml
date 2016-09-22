@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.bigkoo.convenientbanner.ConvenientBanner
+        android:id="@+id/convenientBanner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:canLoop="true"/>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:src="@color/grey_100"/>
+    <LinearLayout
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/cheer_1"
+            android:layout_width="100dp"
+            android:layout_height="60dp" />
+        <ImageView
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/cheer_2"
+            android:layout_width="100dp"
+            android:layout_height="60dp" />
+        <ImageView
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/cheer_4"
+            android:layout_width="100dp"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+
+    <ImageView
+    android:layout_width="match_parent"
+    android:layout_height="10dp"
+    android:src="@color/line_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:scaleType="centerCrop"
+            android:src="@mipmap/linshi"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:src="@color/grey_100"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+        <ImageView
+            android:src="@android:color/darker_gray"
+            android:layout_width="5dp"
+            android:layout_height="18dp" />
+        <TextView
+            android:textSize="14sp"
+            android:text="烘焙相关"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

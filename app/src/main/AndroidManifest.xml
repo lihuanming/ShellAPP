@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.devin.client.shellapp">
+
+    <!-- To access Google+ APIs: -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo3"
+        android:supportsRtl="true"
+        android:name=".context.ApplicationContext"
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".ui.activity.MainTabActivity"
+            android:label="Barker"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.activity.SimpleRecipeActivity"
+            android:label="黑加仑冻芝士"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.SimpleTogatherActivity"
+            android:label="摩羯座法式烘焙(正佳广场店)"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.UserInfoActivity" />
+        <activity
+            android:name=".ui.activity.UserMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.StartMainActivity"
+            android:label="@string/title_activity_start_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.LoginActivity" />
+        <activity android:name=".ui.activity.RegisterActivity" />
+        <activity android:name=".ui.activity.ForgotPassActivity" />
+    </application>
+
+</manifest>
