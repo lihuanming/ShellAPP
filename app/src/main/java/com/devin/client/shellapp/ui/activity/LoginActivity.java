@@ -1,411 +1,231 @@
 package com.devin.client.shellapp.ui.activity;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
-import android.app.LoaderManager;
-import android.app.ProgressDialog;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.devin.client.shellapp.R;
-import com.devin.client.shellapp.utils.Constants;
-import com.devin.client.shellapp.utils.ValidateUserInfo;
+import com.devin.client.shellapp.utils.VolleyInterface;
+import com.devin.client.shellapp.utils.VolleyRequest;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static android.Manifest.permission.READ_CONTACTS;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends AppCompatActivity implements
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-        View.OnClickListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
+    @Bind(R.id.txt_cancel)
+    TextView mTxtCancel;
+    @Bind(R.id.txt_email)
+    AutoCompleteTextView mTxtEmail;
+    @Bind(R.id.txt_password)
+    EditText mTxtPassword;
+    @Bind(R.id.txt_forgot)
+    TextView mTxtForgot;
+    @Bind(R.id.txt_create)
+    TextView mTxtCreate;
+    @Bind(R.id.email_sign_in_button)
+    Button mEmailSignInButton;
 
-    private static final int REQUEST_READ_CONTACTS = 0;
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-
-  /*  private UserLoginTask mAuthTask = null;*/
-
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-
-    /* Request code used to invoke sign in user interactions. */
-    private static final int RC_SIGN_IN = 0;
-    /* Client used to interact with Google APIs. */
-
-    /* Is there a ConnectionResult resolution in progress? */
-    private boolean mIsResolving = false;
-    private boolean mShouldResolve = false;
-    private Button mEmailSignInButton;
-    private TextView txt_create, txt_forgot, txt_cancel;
-    ProgressDialog ringProgressDialog;
+    private static final String TAG = "LoginActivity";
+    private static final int REQUEST_SIGNUP = 0;
+    private static final int REQUEST_CODE_TO_REGISTER = 0x001;
+    private SharedPreferences sharedPreferences;
+    private String tag;
+    private SharedPreferences.Editor editor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        initInstances();
-    }
-
-    private void initInstances() {
-        // Set up the login form.
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.txt_email);
-        populateAutoComplete();
-
-        mPasswordView = (EditText) findViewById(R.id.txt_password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        txt_create = (TextView) findViewById(R.id.txt_create);
-        txt_create.setOnClickListener(this);
-
-        txt_forgot = (TextView) findViewById(R.id.txt_forgot);
-        txt_forgot.setOnClickListener(this);
-
-        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(this);
-
-        txt_cancel = (TextView) findViewById(R.id.txt_cancel);
-        txt_cancel.setOnClickListener(this);
-    }
-
-    private void populateAutoComplete() {
-        if (!mayRequestContacts()) {
-            return;
-        }
-
-        getLoaderManager().initLoader(0, null, this);
-    }
-
-    private boolean mayRequestContacts() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return true;
-        }
-        if (checkSelfPermission(READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        }
-        if (shouldShowRequestPermissionRationale(READ_CONTACTS)) {
-            Snackbar.make((LinearLayout) findViewById(R.id.ll_main), R.string.permission_rationale, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(android.R.string.ok, new View.OnClickListener() {
-                        @Override
-                        @TargetApi(Build.VERSION_CODES.M)
-                        public void onClick(View v) {
-                            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-                        }
-                    }).show();
-        } else {
-            requestPermissions(new String[]{READ_CONTACTS}, REQUEST_READ_CONTACTS);
-        }
-        return false;
-    }
-
-    /**
-     * Callback received when a permissions request has been completed.
-     */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_READ_CONTACTS) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                populateAutoComplete();
-            }
-        }
-    }
-
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    private void attemptLogin() {
-       /* if (mAuthTask != null) {
-            return;
+        ButterKnife.bind(this);
+        sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        // 数据的回显
+        // 从sharedPreferences中获取数据
+        String email = sharedPreferences.getString("email", "");
+        String password = sharedPreferences.getString("password", "");
+        /*if (email.isEmpty()){
+            mTxtEmail.setError("邮箱不能为空！");
+        }else if(pwd.isEmpty()){
+            mTxtPassword.setError("密码不能为空！");
+        }else {
+            // 给AutoCompleteTextView设置数据
+            mTxtEmail.setText(email);
+            mTxtPassword.setText(pwd);
         }*/
-
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
-        boolean cancel = false;
-        View focusView = null;
-
-        ValidateUserInfo validateUserInfo = new ValidateUserInfo();
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !validateUserInfo.isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!validateUserInfo.isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-          /*  mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);*/
-        }
     }
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
-
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
-
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onClick(View v) {
-        String email = mEmailView.getText().toString();
-
-        switch (v.getId()) {
-
-            case R.id.email_sign_in_button:
-                attemptLogin();
-                break;
-            case R.id.txt_create:
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                intent.putExtra(Constants.TAG_EMAIL, email);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.txt_forgot:
-                Intent intentForgot = new Intent(LoginActivity.this, ForgotPassActivity.class);
-                intentForgot.putExtra(Constants.TAG_EMAIL, email);
-                startActivity(intentForgot);
-                finish();
-                break;
+    //页面控件操作
+    @OnClick({R.id.txt_cancel, R.id.txt_forgot, R.id.txt_create, R.id.email_sign_in_button})
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.txt_cancel:
-                Intent intentCancel = new Intent(LoginActivity.this, MainTabActivity.class);
-                intentCancel.putExtra(Constants.TAG_EMAIL, email);
-                startActivity(intentCancel);
-                finish();
+                backUserInfo();
+                break;
+            case R.id.txt_forgot:   //忘记密码
+                enterForgetPwd();
+                break;
+            case R.id.txt_create:   //注册
+                enterRegister();
+                break;
+            case R.id.email_sign_in_button: //登陆
+                login();
+                break;
+            default:
                 break;
         }
     }
 
-  /*  private void onSignInClicked() {
-        //toastLoading.show();
-        // User clicked the sign-in button, so begin the sign-in process and automatically
-        // attempt to resolve any errors that occur.
-        ringProgressDialog = ProgressDialog.show(LoginActivity.this, "连接中...", "尝试连接...", true);
-        ringProgressDialog.setCancelable(false);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mShouldResolve = true;
-                    //mGoogleApiClient.connect();
-                } catch (Exception e) {
-                    ringProgressDialog.dismiss();
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }*/
-
+    /**
+     * 跳转到个人信息页面
+     */
+    public void backUserInfo() {
+        /*Intent intent = new Intent(this, UserInfoFragment.class);
+        startActivity(intent);*/
+        finish();
+    }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * 跳转到忘记密码
      */
-  /*  public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+    private void enterForgetPwd() {
+        Intent intent = new Intent(this, ForgotPassActivity.class);
+        startActivity(intent);
+    }
 
-        private final String mEmail;
-        private final String mPassword;
+    /**
+     * 跳转到注册页面
+     */
+    private void enterRegister() {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivityForResult(intent, REQUEST_CODE_TO_REGISTER);
+    }
 
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+    //登陆校验
+    public void login() {
+        Log.d(TAG, "Login");
+        if (!validate()) {
+            onLoginFailed();
+        } else {
+            mEmailSignInButton.setEnabled(false);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("email", mTxtEmail.getText().toString().trim());
+            params.put("password", mTxtPassword.getText().toString().trim());
+            //?account=yatu&password=yatu
+            String url = "http://119.29.161.112:8080/barker/cgi-bin/user/find";
+            VolleyRequest.requestPost(LoginActivity.this, url, tag, params, new VolleyInterface(LoginActivity.this, VolleyInterface.listener, VolleyInterface.errorListener) {
+                @Override
+                public void onMyError(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
                 }
+
+                @Override
+                public void onMySuccess(String result) {
+                    JSONObject object=null;
+                    try {
+                        object = new JSONObject(result).getJSONObject("data");
+                        if (object != null) {
+                            String data = object.toString();
+                            String account = object.getString("email");
+                            String name = object.getString("password");
+                            editor.putString("data", object.toString());
+                            //Toast.makeText(getActivity(),account,Toast.LENGTH_LONG).show();
+                            editor.putString("account", object.getString("account"));
+                            editor.putString("name", object.getString("name"));
+                            editor.commit();
+                            onLoginSuccess();
+                          /*  MainTabActivity.tabMain.setCurrentTab(0);
+                            MainTabActivity.line.setVisibility(View.VISIBLE);
+                            MainTabActivity.commonTabLayout.setVisibility(View.VISIBLE);*/
+                        } else {
+                            Toast.makeText(LoginActivity.this, "邮箱或密码错误", Toast.LENGTH_LONG).show();
+                            editor.remove("account");
+                            editor.remove("name");
+                            editor.remove("data");
+                            editor.commit();
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }
+    }
+
+    /*
+    * 实现成功的注册逻辑
+    */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_SIGNUP) {
+            if (requestCode == RESULT_OK) {
+                // TODO: Implement successful signup logic here
+                // By default we just finish the Activity and log them in automatically
+                this.finish();
             }
-
-            // TODO: register the new account here.
-            return true;
         }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
-
-            if (success) {
-                startActivity(new Intent(LoginActivity.this, UserMainActivity.class));
-                finish();
-            } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-            showProgress(false);
-        }
-    }*/
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public void onBackPressed() {
+        // 禁止按返回键
+        moveTaskToBack(true);
     }
+
+    //登陆成功
+    public void onLoginSuccess() {
+        mEmailSignInButton.setEnabled(true);
+        finish();
+    }
+
+    //登陆失败
+    public void onLoginFailed() {
+       /* Toast.makeText(getBaseContext(), "登录失败！", Toast.LENGTH_LONG).show();*/
+        mEmailSignInButton.setEnabled(true);
+    }
+
+    //邮箱、密码校验
+    public boolean validate() {
+        boolean valid = true;
+
+        String email = mTxtEmail.getText().toString();
+        String password = mTxtPassword.getText().toString();
+
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            mTxtEmail.setError("请输入正确的邮箱！");
+            mTxtEmail.requestFocus();
+            valid = false;
+        } else {
+            mTxtEmail.setError(null);
+        }
+
+        if (password.isEmpty() || password.length() < 4 ) {
+            mTxtPassword.setError("密码的长度必须大于4！");
+            mTxtPassword.requestFocus();
+            valid = false;
+        } else {
+            mTxtPassword.setError(null);
+        }
+        return valid;
+    }
+
 }
