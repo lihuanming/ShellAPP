@@ -1,34 +1,36 @@
 package com.devin.client.shellapp.ui.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.VolleyError;
 import com.devin.client.shellapp.R;
-import com.devin.client.shellapp.utils.VolleyInterface;
-import com.devin.client.shellapp.utils.VolleyRequest;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.devin.client.shellapp.context.ApplicationContext;
+import com.devin.client.shellapp.model.UserBaseInfo;
+import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
+import com.devin.client.shellapp.utils.HttpResponeCallBack;
+import com.devin.client.shellapp.utils.RequestApiData;
+import com.devin.client.shellapp.utils.UserPreference;
+import com.devin.client.shellapp.utils.ValidateUserInfo;
+import com.devin.client.shellapp.utils.constant.Constants;
+import com.devin.client.shellapp.utils.constant.KeyConstance;
+import com.devin.client.shellapp.utils.constant.UrlConstance;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements HttpResponeCallBack {
 
     @Bind(R.id.txt_cancel)
     TextView mTxtCancel;
@@ -43,83 +45,60 @@ public class LoginActivity extends AppCompatActivity {
     @Bind(R.id.email_sign_in_button)
     Button mEmailSignInButton;
 
-    private static final String TAG = "LoginActivity";
-    private static final int REQUEST_SIGNUP = 0;
-    private static final int REQUEST_CODE_TO_REGISTER = 0x001;
-    private SharedPreferences sharedPreferences;
-    private String tag;
-    private SharedPreferences.Editor editor;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        sharedPreferences = getSharedPreferences("info", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        // 数据的回显
-        // 从sharedPreferences中获取数据
-        String email = sharedPreferences.getString("email", "");
-        String password = sharedPreferences.getString("password", "");
-        /*if (email.isEmpty()){
-            mTxtEmail.setError("邮箱不能为空！");
-        }else if(pwd.isEmpty()){
-            mTxtPassword.setError("密码不能为空！");
-        }else {
-            // 给AutoCompleteTextView设置数据
-            mTxtEmail.setText(email);
-            mTxtPassword.setText(pwd);
-        }*/
+        initView();
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    //页面控件操作
-    @OnClick({R.id.txt_cancel, R.id.txt_forgot, R.id.txt_create, R.id.email_sign_in_button})
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.txt_cancel:
-                backUserInfo();
-                break;
-            case R.id.txt_forgot:   //忘记密码
-                enterForgetPwd();
-                break;
-            case R.id.txt_create:   //注册
-                enterRegister();
-                break;
-            case R.id.email_sign_in_button: //登陆
-                login();
-                break;
-            default:
-                break;
-        }
+    /*
+    * 初始化数据
+    * */
+    private void initView() {
+        //点击“注册”
+        mTxtCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        //点击“忘记密码”
+        mTxtForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        //点击“取消”
+        mTxtCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+        //点击登录按钮
+        mEmailSignInButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = mTxtEmail.getText().toString();//邮箱
+                String password = mTxtPassword.getText().toString();//密码
+                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && ValidateUserInfo.isEmailValid(email)) {
+                    RequestApiData.getInstance().getLoginData(email, password, UserBaseInfo.class, LoginActivity.this);
+                } else {
+                    Toast.makeText(LoginActivity.this, "邮箱或密码有误", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
-    /**
-     * 跳转到个人信息页面
-     */
-    public void backUserInfo() {
-        /*Intent intent = new Intent(this, UserInfoFragment.class);
-        startActivity(intent);*/
-        finish();
-    }
-
-    /**
-     * 跳转到忘记密码
-     */
-    private void enterForgetPwd() {
-        Intent intent = new Intent(this, ForgotPassActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * 跳转到注册页面
-     */
-    private void enterRegister() {
-        Intent intent = new Intent(this, RegisterActivity.class);
-        startActivityForResult(intent, REQUEST_CODE_TO_REGISTER);
-    }
-
-    //登陆校验
-    public void login() {
+   /* public void login() {
         Log.d(TAG, "Login");
         if (!validate()) {
             onLoginFailed();
@@ -130,102 +109,108 @@ public class LoginActivity extends AppCompatActivity {
             params.put("password", mTxtPassword.getText().toString().trim());
             //?account=yatu&password=yatu
             String url = "http://119.29.161.112:8080/barker/cgi-bin/user/find";
-            VolleyRequest.requestPost(LoginActivity.this, url, tag, params, new VolleyInterface(LoginActivity.this, VolleyInterface.listener, VolleyInterface.errorListener) {
-                @Override
-                public void onMyError(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onMySuccess(String result) {
-                    JSONObject object=null;
-                    try {
-                        object = new JSONObject(result).getJSONObject("data");
-                        if (object != null) {
-                            String data = object.toString();
-                            String account = object.getString("email");
-                            String name = object.getString("password");
-                            editor.putString("data", object.toString());
-                            //Toast.makeText(getActivity(),account,Toast.LENGTH_LONG).show();
-                            editor.putString("account", object.getString("account"));
-                            editor.putString("name", object.getString("name"));
-                            editor.commit();
-                            onLoginSuccess();
-                          /*  MainTabActivity.tabMain.setCurrentTab(0);
-                            MainTabActivity.line.setVisibility(View.VISIBLE);
-                            MainTabActivity.commonTabLayout.setVisibility(View.VISIBLE);*/
-                        } else {
-                            Toast.makeText(LoginActivity.this, "邮箱或密码错误", Toast.LENGTH_LONG).show();
-                            editor.remove("account");
-                            editor.remove("name");
-                            editor.remove("data");
-                            editor.commit();
+            VolleyRequest.requestPost(LoginActivity.this, url, tag, params,
+                    new VolleyInterface(LoginActivity.this, VolleyInterface.listener,
+                            VolleyInterface.errorListener) {
+                        @Override
+                        public void onMyError(VolleyError error) {
+                            Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
                         }
-                    } catch (JSONException e) {
-                        Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
+
+                        @Override
+                        public void onMySuccess(String result) {
+                            JSONObject object = null;
+                            try {
+                                object = new JSONObject(result).getJSONObject("data");
+                                if (object != null) {
+                                    *//*String data = object.toString();
+                                    String account = object.getString("email");
+                                    String name = object.getString("password");*//*
+                                    editor.putString("data", object.toString());
+                                    //Toast.makeText(getActivity(),account,Toast.LENGTH_LONG).show();
+                                    editor.putString("account", object.getString("account"));
+                                    editor.putString("name", object.getString("name"));
+                                    editor.commit();
+                                    onLoginSuccess();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, "邮箱或密码错误", Toast.LENGTH_LONG).show();
+                                    editor.remove("account");
+                                    editor.remove("name");
+                                    editor.remove("data");
+                                    editor.commit();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+        }
+    }*/
+
+    @Override
+    public void onResponeStart(String apiName) {
+        if (UrlConstance.KEY_LOGIN_INFO.equals(apiName)) {
+            Toast.makeText(this, "正在加载数据中...", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onLoading(String apiName, long count, long current) {
+        Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSuccess(String apiName, Object object) {
+        if (UrlConstance.KEY_LOGIN_INFO.equals(apiName)) {
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setMessage("正在注册...请稍后...");
+            dialog.setCancelable(true);
+            dialog.show();
+            new Thread() {
+                public void run() {
+                    try {
+                        sleep(3000);
+                    } catch (Exception e) {
                         e.printStackTrace();
+                    } finally {
+                        dialog.dismiss();
                     }
                 }
-            });
-        }
-    }
+            }.start();
+            //邮箱登录返回数据
+            if (object != null && object instanceof UserBaseInfo) {
+                UserBaseInfo info = (UserBaseInfo) object;
+                if (info.getRet().equals(Constants.KEY_SUCCESS)) {
+                    //登录成功，保存登录信息
+                    ApplicationContext.getInstance().setBaseUser(info);//保存到Application中
+                    //保存到SP中
+                    UserPreference.save(KeyConstance.IS_USER_ID, info.getUserid());
+                    UserPreference.save(KeyConstance.IS_USER_EMAIL, info.getEmail());
+                    UserPreference.save(KeyConstance.IS_USER_ACCOUNT, info.getName());
+                    UserPreference.save(KeyConstance.IS_USER_PASSWORD, mTxtPassword.getText().toString());
 
-    /*
-    * 实现成功的注册逻辑
-    */
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (requestCode == RESULT_OK) {
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
+                    Intent intent = new Intent(LoginActivity.this, UserInfoFragment.class);
+                    startActivity(intent);
+                    //覆盖过渡
+                    overridePendingTransition(android.R.anim.slide_in_left,
+                            android.R.anim.slide_out_right);
+                    finish();
+                } else {
+                    Log.e("TAG", "info=" + info.toString());
+                    if (info.getErrcode().equals(Constants.KEY_NO_REGIST)) {
+                        Toast.makeText(this, "此邮箱未注册！登录失败", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, info.getMsg(), Toast.LENGTH_SHORT).show();
+                        Log.e("TAG", "info.getMsg()=" + info.getMsg());
+                    }
+                }
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void onBackPressed() {
-        // 禁止按返回键
-        moveTaskToBack(true);
+    public void onFailure(String apiName, Throwable throwable, int errorNo, String strMsg) {
+        Toast.makeText(this, "Failure...", Toast.LENGTH_SHORT).show();
     }
-
-    //登陆成功
-    public void onLoginSuccess() {
-        mEmailSignInButton.setEnabled(true);
-        finish();
-    }
-
-    //登陆失败
-    public void onLoginFailed() {
-       /* Toast.makeText(getBaseContext(), "登录失败！", Toast.LENGTH_LONG).show();*/
-        mEmailSignInButton.setEnabled(true);
-    }
-
-    //邮箱、密码校验
-    public boolean validate() {
-        boolean valid = true;
-
-        String email = mTxtEmail.getText().toString();
-        String password = mTxtPassword.getText().toString();
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            mTxtEmail.setError("请输入正确的邮箱！");
-            mTxtEmail.requestFocus();
-            valid = false;
-        } else {
-            mTxtEmail.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 ) {
-            mTxtPassword.setError("密码的长度必须大于4！");
-            mTxtPassword.requestFocus();
-            valid = false;
-        } else {
-            mTxtPassword.setError(null);
-        }
-        return valid;
-    }
-
 }
