@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -86,67 +85,46 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
         mEmailSignInButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = mTxtEmail.getText().toString();//邮箱
-                String password = mTxtPassword.getText().toString();//密码
-
-                if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && ValidateUserInfo.isEmailValid(email)) {
-                    RequestApiData.getInstance().getLoginData(email, password, UserBaseInfo.class, LoginActivity.this);
-                } else {
-                    Toast.makeText(LoginActivity.this, "邮箱或密码有误", Toast.LENGTH_SHORT).show();
-                }
+                clickLogin();
             }
         });
     }
 
-   /* public void login() {
-        Log.d(TAG, "Login");
-        if (!validate()) {
-            onLoginFailed();
-        } else {
-            mEmailSignInButton.setEnabled(false);
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("email", mTxtEmail.getText().toString().trim());
-            params.put("password", mTxtPassword.getText().toString().trim());
-            //?account=yatu&password=yatu
-            String url = "http://119.29.161.112:8080/barker/cgi-bin/user/find";
-            VolleyRequest.requestPost(LoginActivity.this, url, tag, params,
-                    new VolleyInterface(LoginActivity.this, VolleyInterface.listener,
-                            VolleyInterface.errorListener) {
-                        @Override
-                        public void onMyError(VolleyError error) {
-                            Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void onMySuccess(String result) {
-                            JSONObject object = null;
-                            try {
-                                object = new JSONObject(result).getJSONObject("data");
-                                if (object != null) {
-                                    *//*String data = object.toString();
-                                    String account = object.getString("email");
-                                    String name = object.getString("password");*//*
-                                    editor.putString("data", object.toString());
-                                    //Toast.makeText(getActivity(),account,Toast.LENGTH_LONG).show();
-                                    editor.putString("account", object.getString("account"));
-                                    editor.putString("name", object.getString("name"));
-                                    editor.commit();
-                                    onLoginSuccess();
-                                } else {
-                                    Toast.makeText(LoginActivity.this, "邮箱或密码错误", Toast.LENGTH_LONG).show();
-                                    editor.remove("account");
-                                    editor.remove("name");
-                                    editor.remove("data");
-                                    editor.commit();
-                                }
-                            } catch (JSONException e) {
-                                Toast.makeText(LoginActivity.this, "网络连接超时...", Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
-                            }
-                        }
-                    });
+    private void clickLogin() {
+        String email = mTxtEmail.getText().toString();//邮箱
+        String password = mTxtPassword.getText().toString();//密码
+        if (checkInput(email,password)){
+           //输入信息不匹配，登陆失败
+            Toast.makeText(this, "邮箱或密码错误", Toast.LENGTH_SHORT).show();
+        }else {
+            //请求服务器获取数据登录账号
+            RequestApiData.getInstance().getLoginData(email, password, UserBaseInfo.class, LoginActivity.this);
         }
-    }*/
+    }
+
+    /**
+     * 检查输入
+     * @param email
+     * @param password
+     * @return
+     */
+    private boolean checkInput(String email, String password) {
+        //账号为空时提示
+        if (email==null||email.trim().equals("")){
+            Toast.makeText(this, R.string.tip_account_empty, Toast.LENGTH_LONG).show();
+        }else {
+            //账号不匹配邮箱格式
+            if (!ValidateUserInfo.isEmailValid(email)){
+                Toast.makeText(this, R.string.tip_account_regex_not_right, Toast.LENGTH_LONG).show();
+            }else if (password==null||password.trim().equals("")){
+                Toast.makeText(this, R.string.tip_password_can_not_be_empty, Toast.LENGTH_SHORT).show();
+            }else {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     @Override
     public void onResponeStart(String apiName) {
