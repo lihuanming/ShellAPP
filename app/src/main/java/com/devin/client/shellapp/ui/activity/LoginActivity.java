@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
             public void onClick(View v) {
                 String email = mTxtEmail.getText().toString();//邮箱
                 String password = mTxtPassword.getText().toString();//密码
+
                 if (!TextUtils.isEmpty(email) && !TextUtils.isEmpty(password) && ValidateUserInfo.isEmailValid(email)) {
                     RequestApiData.getInstance().getLoginData(email, password, UserBaseInfo.class, LoginActivity.this);
                 } else {
