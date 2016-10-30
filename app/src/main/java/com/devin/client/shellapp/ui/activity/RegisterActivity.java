@@ -16,6 +16,7 @@ import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.model.AnalyticalRegistInfo;
 import com.devin.client.shellapp.model.UserBaseInfo;
+import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
 import com.devin.client.shellapp.utils.HttpResponeCallBack;
 import com.devin.client.shellapp.utils.NetworkUtils;
 import com.devin.client.shellapp.utils.RequestApiData;
@@ -130,10 +131,10 @@ public class RegisterActivity extends AppCompatActivity implements HttpResponeCa
                     UserPreference.save(KeyConstance.IS_USER_EMAIL, info.getEmail());
                     UserPreference.save(KeyConstance.IS_USER_PASSWORD, mEditPassword.getText().toString());
 
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, UserInfoFragment.class);
                     RegisterActivity.this.startActivity(intent);
 
-                    Toast.makeText(this, "注册成功，正在返回登陆页面...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "恭喜你！注册成功...", Toast.LENGTH_SHORT).show();
 
                     RegisterActivity.this.finish();
                 } else {
