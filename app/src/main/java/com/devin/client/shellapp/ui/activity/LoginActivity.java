@@ -1,6 +1,5 @@
 package com.devin.client.shellapp.ui.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -164,21 +163,6 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
     @Override
     public void onSuccess(String apiName, Object object) {
         if (UrlConstance.KEY_LOGIN_INFO.equals(apiName)) {
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setMessage("正在注册...请稍后...");
-            dialog.setCancelable(true);
-            dialog.show();
-            new Thread() {
-                public void run() {
-                    try {
-                        sleep(3000);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    } finally {
-                        dialog.dismiss();
-                    }
-                }
-            }.start();
             //邮箱登录返回数据
             if (object != null && object instanceof UserBaseInfo) {
                 UserBaseInfo info = (UserBaseInfo) object;
