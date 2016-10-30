@@ -8,7 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.devin.client.shellapp.context.ApplicationContext;
+import com.devin.client.shellapp.context.LibApplicationContext;
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class RequestManager {
     private synchronized static void initRequestQueue() {
         if (mRequestQueue == null) {
             //创建一个请求队列
-            mRequestQueue = Volley.newRequestQueue(ApplicationContext.getInstance());
+            mRequestQueue = Volley.newRequestQueue(LibApplicationContext.getInstance());
         }
     }
 
@@ -91,9 +91,7 @@ public class RequestManager {
         StringBuilder builder = new StringBuilder(app_url);
         builder.append(url);
         // 检查当前网络是否可用
-        final NetworkUtils networkUtils = new NetworkUtils(ApplicationContext.getInstance());
-
-        if (!networkUtils.isNetworkConnected() && android.os.Build.VERSION.SDK_INT > 10) {
+        if (!NetworkUtils.isNetworkAvailable() && android.os.Build.VERSION.SDK_INT > 10) {
             if (callback != null) {
                 callback.onFailure(url, null, 0, "网络出错···");//回调请求失败
                 return;
@@ -118,7 +116,6 @@ public class RequestManager {
                                 Gson gson = new Gson();
                                 //回调请求成功，同时url和解析的对象
                                 callback.onSuccess(url, gson.fromJson(response, clazz));
-
                             }
 
                         } catch (Exception e) {

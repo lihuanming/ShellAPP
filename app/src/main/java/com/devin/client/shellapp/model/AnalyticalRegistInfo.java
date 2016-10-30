@@ -19,7 +19,7 @@ public class AnalyticalRegistInfo implements Serializable{
     private String name;//昵称
     private String userhead;//用户头像路径
     private int userid;//用户id
-    private String email;//用户邮件
+    private String email;//用户邮箱
 
 
     public String getRet() {

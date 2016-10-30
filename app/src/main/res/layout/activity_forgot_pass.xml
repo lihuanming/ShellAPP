@@ -9,31 +9,30 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.activity.ForgotPassActivity">
-    
-    <TextView
+
+   <!-- <TextView
         android:id="@+id/txt_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:textSize="20dp"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="20dp"
-        android:textColor="@color/app_primary"/>
-
+        android:text="@string/callback"
+        android:textColor="@color/app_primary"
+        android:textSize="20sp" />
+-->
     <ScrollView
-        android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp">
+                android:layout_marginTop="10dp">
 
                 <TextView
                     android:id="@+id/txt_logo"
@@ -46,15 +45,14 @@
                     android:text="@string/app_name"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/app_primary"
-                    android:textSize="45dp"
+                    android:textSize="45sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/txt_descricao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_below="@+id/txt_logo"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/forgot_password"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/grey_600" />
@@ -82,7 +80,6 @@
                         android:padding="8dp"
                         android:singleLine="true"
                         android:textColorHint="@color/grey_0" />
-                    <!--android:textColorHint="@color/abc_primary_text_material_dark" />-->
                 </android.support.design.widget.TextInputLayout>
 
                 <Button
@@ -90,7 +87,7 @@
                     style="?android:textAppearanceSmall"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/login_btn"
                     android:text="@string/action_recover"
                     android:textColor="@color/grey_0" />
@@ -98,7 +95,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:text="@string/different_login"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -107,16 +105,16 @@
                 <TextView
                     android:id="@+id/txt_remembered"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
                     android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
                     android:background="@drawable/noaccount_background"
                     android:clickable="true"
                     android:gravity="center"
-                    android:padding="10dp"
+                    android:padding="5dp"
                     android:text="@string/remembered_password"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/grey_1000" />
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

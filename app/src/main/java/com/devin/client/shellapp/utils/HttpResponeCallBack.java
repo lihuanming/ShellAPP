@@ -20,7 +20,6 @@ public interface HttpResponeCallBack {
      * @param count
      * @param current
      */
-
     public void onLoading(String apiName, long count, long current);
 
     public void onSuccess(String apiName, Object object);

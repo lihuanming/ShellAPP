@@ -21,4 +21,6 @@ public class KeyConstance {
     public static final String IS_USER_ACCOUNT ="account";
     //用户的password
     public static final String IS_USER_PASSWORD ="password";
+    //用户的email
+    public static final String IS_USER_EMAIL ="email";
 }

@@ -1,6 +1,7 @@
 package com.devin.client.shellapp.utils;
 
 import com.devin.client.shellapp.model.AnalyticalRegistInfo;
+import com.devin.client.shellapp.model.UserBaseInfo;
 import com.devin.client.shellapp.utils.constant.UrlConstance;
 
 import java.util.HashMap;
@@ -68,4 +69,36 @@ public class RequestApiData {
         RequestManager.post(UrlConstance.APP_URL, tagUrl, parameter, clazz, callBack);
     }
 
+
+    /**
+     * 登陆用户接口
+     * @param email 邮箱
+     * @param password 密码
+     * @param clazz 数据返回的解析对象
+     * @param callback 回调
+     * 注意参数的位置不能改变，按照文档来
+     * 请求方式：POST
+     */
+    public void getLoginData(String email ,String password,
+                             Class<UserBaseInfo> clazz,
+                             HttpResponeCallBack callback) {
+        mCallBack = callback;
+        //这是每一个接口的唯一标示
+        String tagUrl = UrlConstance.KEY_LOGIN_INFO;//登录接口
+        HashMap<String, String> parameter = new HashMap<String, String>();
+        parameter.put("email", email);
+        parameter.put("password", password);
+
+        //拼接参数信息，邮箱，密码，公钥，并用md5进行加密
+        StringBuilder builder = new StringBuilder();
+        builder.append(email);
+        builder.append(password);
+        builder.append(UrlConstance.PUBLIC_KEY);
+
+        parameter.put(UrlConstance.ACCESSTOKEN_KEY,MD5Util.getMD5Str(builder.toString()));
+
+        //请求数据接口
+        RequestManager.post(UrlConstance.APP_URL,tagUrl, parameter, clazz, callback);
+
+    }
 }
