@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.devin.client.shellapp.context.ApplicationContext;
+import com.devin.client.shellapp.context.LibApplicationContext;
 
 /**
  * 项目名称：ShellApp
@@ -28,38 +28,35 @@ public class NetworkUtils {
     public static final int NETWORK_TYPE_UNIWAP = 9;
     public static final int NETWORK_TYPE_UNINET = 10;
 
-    private Context context;
+  /*  private Context context;
     private ConnectivityManager connManager;
-
-    public NetworkUtils(Context context) {
+*/
+   /* public NetworkUtils(Context context) {
         this.context = context;
         connManager = (ConnectivityManager) this.context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
-    }
+    }*/
+    public static boolean isNetworkAvailable( ) {
+        boolean hasWifoCon = false;
+        boolean hasMobileCon = false;
 
+        ConnectivityManager cm = (ConnectivityManager) LibApplicationContext.getInstance().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo[] netInfos = cm.getAllNetworkInfo();
+        for (NetworkInfo net : netInfos) {
 
-    /**
-     * 网络是否连接可用
-     *
-     * @return
-     */
-    public boolean isNetworkConnected() {
-
-        if (connManager == null) {
-            connManager = (ConnectivityManager) ApplicationContext.getInstance()
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-        }
-
-        if (connManager != null) {
-            final NetworkInfo networkinfo = connManager.getActiveNetworkInfo();
-
-            if (networkinfo != null) {
-                return networkinfo.isConnected();
+            String type = net.getTypeName();
+            if (type.equalsIgnoreCase("WIFI")) {
+                if (net.isConnected()) {
+                    hasWifoCon = true;
+                }
             }
-        } else {
-            return true;
-        }
 
-        return false;
+            if (type.equalsIgnoreCase("MOBILE")) {
+                if (net.isConnected()) {
+                    hasMobileCon = true;
+                }
+            }
+        }
+        return hasWifoCon || hasMobileCon;
     }
 }
