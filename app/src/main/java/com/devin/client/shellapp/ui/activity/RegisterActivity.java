@@ -1,178 +1,167 @@
 package com.devin.client.shellapp.ui.activity;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devin.client.shellapp.R;
-import com.devin.client.shellapp.utils.CheckNetwork;
-import com.devin.client.shellapp.utils.Constants;
+import com.devin.client.shellapp.context.ApplicationContext;
+import com.devin.client.shellapp.model.AnalyticalRegistInfo;
+import com.devin.client.shellapp.model.UserBaseInfo;
+import com.devin.client.shellapp.utils.HttpResponeCallBack;
+import com.devin.client.shellapp.utils.NetworkUtils;
+import com.devin.client.shellapp.utils.RequestApiData;
+import com.devin.client.shellapp.utils.UserPreference;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
+import com.devin.client.shellapp.utils.constant.Constants;
+import com.devin.client.shellapp.utils.constant.KeyConstance;
+import com.devin.client.shellapp.utils.constant.UrlConstance;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
-public class RegisterActivity extends Activity implements View.OnClickListener{
-    EditText edit_nome, edit_email, edit_password;
-    TextView txt_alreadyHave;
-    TextView txt_cancel;
-    Button btn_registrar;
-    private CreateUserTask mCreateTask = null;
+public class RegisterActivity extends AppCompatActivity implements HttpResponeCallBack {
+
+
+    @Bind(R.id.edit_name)
+    AutoCompleteTextView mEditName;     //用户昵称
+    @Bind(R.id.edit_email)
+    AutoCompleteTextView mEditEmail;    //注册邮箱
+    @Bind(R.id.edit_password)
+    EditText mEditPassword;              //注册密码
+    @Bind(R.id.btn_register)
+    Button mBtnRegister;                //注册按钮
+    @Bind(R.id.txt_already_have)
+    TextView mTxtAlreadyHave;           //"已经有账号"
+    @Bind(R.id.edit_repassword)
+    EditText mEditRepassword;           //确认密码
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-
-        String email;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            email = extras == null ? "" : extras.getString(Constants.TAG_EMAIL);
-        } else {
-            email = savedInstanceState.getString(Constants.TAG_EMAIL);
+        ButterKnife.bind(this);
+        initView();
+        if (!NetworkUtils.isNetworkAvailable()) {
+            Toast.makeText(this, "网络不可用...", Toast.LENGTH_SHORT).show();
         }
-
-        edit_nome = (EditText) findViewById(R.id.edit_nome);
-        edit_email = (EditText) findViewById(R.id.edit_email);
-        edit_email.setText(email);
-        edit_password = (EditText) findViewById(R.id.edit_password);
-        txt_alreadyHave = (TextView) findViewById(R.id.txt_already_have);
-        txt_alreadyHave.setOnClickListener(this);
-
-        btn_registrar = (Button) findViewById(R.id.btn_register);
-        btn_registrar.setOnClickListener(this);
-        
-        txt_cancel= (TextView) findViewById(R.id.txt_cancel);
-        txt_cancel.setOnClickListener(this);
-        
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptCreate() {
-        // Store values at the time of the login attempt.
-        String name = edit_nome.getText().toString();
-        String email = edit_email.getText().toString();
-        String password = edit_password.getText().toString();
+    private void initView() {
 
-        boolean cancel = false;
-        View focusView = null;
+        //注册按钮
+        mBtnRegister.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //获取用户输入的信息
+                final String name = mEditName.getText().toString();
+                final String email = mEditEmail.getText().toString();
+                String password = mEditPassword.getText().toString();
+                String repassword = mEditRepassword.getText().toString();
+                if (!TextUtils.isEmpty(name) &&
+                        !TextUtils.isEmpty(email)
+                        && !TextUtils.isEmpty(password)
+                        && TextUtils.isEmpty(repassword)) {
+                    if (ValidateUserInfo.isNameValid(name)//验证昵称、密码、邮箱格式是否符合
+                            && ValidateUserInfo.isPasswordValid(password)
+                            && ValidateUserInfo.isEmailValid(email)
+                            && ValidateUserInfo.isPasswordValid(repassword)) {
+                        if (password.equals(repassword)) {
+                            RequestApiData.getInstance().getRegisterData(name, email, password,
+                                    AnalyticalRegistInfo.class, RegisterActivity.this);
+                        }
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "输入信息有误", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(RegisterActivity.this, "输入信息未完全", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        ValidateUserInfo validate = new ValidateUserInfo();
+        });
+        mTxtAlreadyHave.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(name)) {
-            edit_nome.setError(getString(R.string.error_field_required));
-            focusView = edit_nome;
-            cancel = true;
-        } else if (TextUtils.isEmpty(email)) {
-            edit_email.setError(getString(R.string.error_field_required));
-            focusView = edit_email;
-            cancel = true;
-        } else if (!validate.isEmailValid(email)) {
-            edit_email.setError(getString(R.string.error_invalid_email));
-            focusView = edit_email;
-            cancel = true;
-        } else if (TextUtils.isEmpty(password)) {
-            edit_password.setError(getString(R.string.error_field_required));
-            focusView = edit_password;
-            cancel = true;
-        } else if (!validate.isPasswordValid(password)) {
-            edit_password.setError(getString(R.string.error_invalid_password));
-            focusView = edit_password;
-            cancel = true;
-        }
+    @Override
+    public void onResponeStart(String apiName) {
+        Toast.makeText(this, "正在请求数据...", Toast.LENGTH_SHORT).show();
+    }
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            //TODO Create account logic
-            // Show a progress spinner, and kick off a background task to
-            // perform the user registration attempt.
-            mCreateTask = new CreateUserTask(name, email, password);
-            mCreateTask.execute((Void) null);
+    @Override
+    public void onLoading(String apiName, long count, long current) {
+        Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSuccess(String apiName, Object object) {
+        //注册接口
+        if (UrlConstance.KEY_REGIST_INFO.equals(apiName)) {
+            if (object != null && object instanceof AnalyticalRegistInfo) {
+                AnalyticalRegistInfo info = (AnalyticalRegistInfo) object;
+                String successCode = info.getRet();
+                //请求成功
+                final ProgressDialog dialog = new ProgressDialog(this);
+                dialog.setMessage("正在注册...请稍后...");
+                dialog.setCancelable(true);
+                dialog.show();
+                new Thread() {
+                    public void run() {
+                        try {
+                            sleep(3000);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            dialog.dismiss();
+                        }
+                    }
+                }.start();
+                if (successCode.equals(Constants.KEY_SUCCESS)) {
+                    UserBaseInfo baseUser = new UserBaseInfo();
+                    baseUser.setName(info.getName());//昵称
+                    baseUser.setEmail(info.getEmail());//邮箱
+                    baseUser.setUserhead(info.getUserhead());//用户头像
+                    baseUser.setUserid(String.valueOf(info.getUserid()));//用户ID
+
+                    ApplicationContext.getInstance().setBaseUser(baseUser);
+                    UserPreference.save(KeyConstance.IS_USER_ID, String.valueOf(info.getUserid()));
+                    UserPreference.save(KeyConstance.IS_USER_ACCOUNT, info.getName());
+                    UserPreference.save(KeyConstance.IS_USER_EMAIL, info.getEmail());
+                    UserPreference.save(KeyConstance.IS_USER_PASSWORD, mEditPassword.getText().toString());
+
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    RegisterActivity.this.startActivity(intent);
+
+                    Toast.makeText(this, "注册成功，正在返回登陆页面...", Toast.LENGTH_SHORT).show();
+
+                    RegisterActivity.this.finish();
+                } else {
+                    Toast.makeText(this, "很遗憾！注册失败...", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_register:
-                attemptCreate();
-                break;
-            case R.id.txt_already_have:
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-                finish();
-                break;
-            case R.id.txt_cancel:
-                startActivity(new Intent(RegisterActivity.this,MainTabActivity.class));
-                finish();
-                break;
-        }
+    public void onFailure(String apiName, Throwable throwable, int errorNo, String strMsg) {
+        Toast.makeText(this, "Failure...", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class CreateUserTask extends AsyncTask<Void, Void, Boolean> {
-        private final String mName;
-        private final String mEmail;
-        private final String mPassword;
-
-        CreateUserTask(String name, String email, String password) {
-            mName = name;
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: check if account already exists against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            // TODO: if there's no account registered, register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mCreateTask = null;
-            CheckNetwork checkNetwork = new CheckNetwork();
-            if (checkNetwork.isConnected(RegisterActivity.this) && success) {
-                Toast.makeText(RegisterActivity.this, "成功注册！", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(RegisterActivity.this, "网络出错！", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mCreateTask = null;
-        }
-    }
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
-        finish();
-    }
 }
