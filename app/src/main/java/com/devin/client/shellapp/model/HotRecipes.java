@@ -23,7 +23,7 @@ public class HotRecipes {
         return hotRecipes;
     }
 
-    private HotRecipe getHotRecipe(int img, String name,String longstring,String date){
+    private HotRecipe getHotRecipe(int img, String name, String longstring, String date){
         HotRecipe hotRecipe = new HotRecipe();
         hotRecipe.setImgUrl(img);
         hotRecipe.setName(name);

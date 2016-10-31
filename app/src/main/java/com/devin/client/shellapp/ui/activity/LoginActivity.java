@@ -111,13 +111,13 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
     private boolean checkInput(String email, String password) {
         //账号为空时提示
         if (email==null||email.trim().equals("")){
-            Toast.makeText(this, R.string.tip_account_empty, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.tip_account_empty, Toast.LENGTH_LONG).show();
         }else {
             //账号不匹配邮箱格式
             if (!ValidateUserInfo.isEmailValid(email)){
-                Toast.makeText(this, R.string.tip_account_regex_not_right, Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, R.string.tip_account_regex_not_right, Toast.LENGTH_LONG).show();
             }else if (password==null||password.trim().equals("")){
-                Toast.makeText(this, R.string.tip_password_can_not_be_empty, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, R.string.tip_password_can_not_be_empty, Toast.LENGTH_SHORT).show();
             }else {
                 return true;
             }

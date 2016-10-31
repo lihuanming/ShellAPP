@@ -2,6 +2,7 @@ package com.devin.client.shellapp.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 /**
  * Created by yatu on 2016-05-16.
  */

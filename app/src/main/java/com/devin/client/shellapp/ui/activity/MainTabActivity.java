@@ -28,7 +28,7 @@ public class MainTabActivity extends AppCompatActivity {
     public static ArrayList<Fragment> fragments2 = new ArrayList<>();
     public static  ImageView line;
     private int cur_index;
-    public static  CommonTabLayout commonTabLayout;
+    public static CommonTabLayout commonTabLayout;
     private String[] titles = {"首页", "商城", "星级食谱", "贝壳圈", "我"};
     private int[] iconUnselectIds = {
             R.mipmap.tab_home_unselect, R.mipmap.tab_shopping_unselect,

@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.model.Store;
@@ -29,13 +28,13 @@ public class SimpleTogatherActivity extends AppCompatActivity {
         TextView address=(TextView)findViewById(R.id.address);
         TextView tel=(TextView)findViewById(R.id.tel);
 
-        Bundle bundle=this.getIntent().getExtras();
+        Bundle bundle=getIntent().getExtras();
         final Store store=(Store)bundle.getSerializable("item");
         title.setText(""+store.getTitle());
         tel.setText("电话："+store.getTel());
         address.setText(store.getAddress());
         Picasso.with(this)
-                .load(store.getImage())
+                .load(store.getImageInt())
                 .into(pic);
 
 

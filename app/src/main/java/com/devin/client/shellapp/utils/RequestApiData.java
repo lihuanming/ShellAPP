@@ -1,5 +1,6 @@
 package com.devin.client.shellapp.utils;
 
+import com.android.volley.Request;
 import com.devin.client.shellapp.model.AnalyticalRegistInfo;
 import com.devin.client.shellapp.model.UserBaseInfo;
 import com.devin.client.shellapp.utils.constant.UrlConstance;
@@ -66,7 +67,7 @@ public class RequestApiData {
 
         parameter.put(UrlConstance.ACCESSTOKEN_KEY, MD5Util.getMD5Str(builder.toString()));
         //请求接口
-        RequestManager.post(UrlConstance.APP_URL, tagUrl, parameter, clazz, callBack);
+        RequestManager.post(Request.Method.POST, UrlConstance.APP_URL, tagUrl, parameter, clazz, callBack);
     }
 
 
@@ -95,10 +96,10 @@ public class RequestApiData {
         builder.append(password);
         builder.append(UrlConstance.PUBLIC_KEY);
 
-        parameter.put(UrlConstance.ACCESSTOKEN_KEY,MD5Util.getMD5Str(builder.toString()));
+        parameter.put(UrlConstance.ACCESSTOKEN_KEY, MD5Util.getMD5Str(builder.toString()));
 
         //请求数据接口
-        RequestManager.post(UrlConstance.APP_URL,tagUrl, parameter, clazz, callback);
+        RequestManager.post(Request.Method.POST, UrlConstance.APP_URL,tagUrl, parameter, clazz, callback);
 
     }
 }

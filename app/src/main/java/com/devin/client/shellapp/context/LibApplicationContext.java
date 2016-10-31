@@ -2,6 +2,8 @@ package com.devin.client.shellapp.context;
 
 import android.app.Application;
 
+import com.uuzuche.lib_zxing.activity.ZXingLibrary;
+
 public class LibApplicationContext extends Application {
     private static LibApplicationContext instance;
 
@@ -9,6 +11,7 @@ public class LibApplicationContext extends Application {
     public void onCreate() {
         super.onCreate();
         setInstance(this);
+        ZXingLibrary.initDisplayOpinion(this);
     }
 
     private void setInstance(LibApplicationContext instance) {

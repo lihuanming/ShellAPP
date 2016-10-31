@@ -21,17 +21,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/cheer_1"
             android:layout_marginEnd="10dp"
             android:src="@mipmap/cheer_1"
             android:layout_width="100dp"
             android:layout_height="60dp" />
         <ImageView
+            android:id="@+id/cheer_2"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:src="@mipmap/cheer_2"
             android:layout_width="100dp"
             android:layout_height="60dp" />
         <ImageView
+            android:id="@+id/cheer_3"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:src="@mipmap/cheer_4"
@@ -46,12 +49,26 @@
     android:src="@color/line_color"/>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="60dp">
         <ImageView
+            android:id="@+id/new_shop"
             android:scaleType="centerCrop"
-            android:src="@mipmap/linshi"
-            android:layout_width="match_parent"
+            android:src="@mipmap/new_shop"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="#f0f0f0"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/youhui_shop"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/youhui_shop"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="60dp" />
     </LinearLayout>
     <ImageView

@@ -6,6 +6,16 @@ import java.io.Serializable;
 public class Store implements Serializable{
     private Integer id;
 
+    private int imageInt;
+
+    public void setImage(int image) {
+        this.imageInt = image;
+    }
+
+    public int getImageInt(){
+        return imageInt;
+    }
+
     public String getImage() {
         return image;
     }

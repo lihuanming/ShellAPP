@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.utils.CheckNetwork;
-import com.devin.client.shellapp.utils.Constants;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
+import com.devin.client.shellapp.utils.constant.Constants;
 
 public class ForgotPassActivity extends Activity implements View.OnClickListener{
     EditText edit_email;

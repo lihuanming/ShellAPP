@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.devin.client.shellapp.R;
-import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.ui.activity.MainTabActivity;
 import com.devin.client.shellapp.utils.VolleyInterface;
 import com.devin.client.shellapp.utils.VolleyRequest;
@@ -106,9 +105,6 @@ public class nologinFragment extends Fragment {
 
     @Override
     public void onStop() {
-        if(tag!=null && !tag.trim().equals("")){
-            ApplicationContext.getQueues().cancelAll(tag);
-        }
         super.onStop();
     }
 
@@ -133,7 +129,7 @@ public class nologinFragment extends Fragment {
                     params.put("password",password.getText().toString().trim());
                     //?account=yatu&password=yatu
                     String url = "http://119.29.161.112:8080/barker/cgi-bin/user/find";
-                    VolleyRequest.requestPost(getContext(),url,tag,params, new VolleyInterface(getActivity(),VolleyInterface.listener, VolleyInterface.errorListener){
+                    VolleyRequest.requestPost(getContext(),url,tag,params, new VolleyInterface(getActivity(), VolleyInterface.listener, VolleyInterface.errorListener){
                         @Override
                         public void onMyError(VolleyError error) {
                             Toast.makeText(getContext(),"网络连接超时...",Toast.LENGTH_LONG).show();
