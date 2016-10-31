@@ -26,7 +26,7 @@ public class ApplicationContext extends LibApplicationContext {
     public void onCreate() {
         super.onCreate();
         setInstance(this);
-        requestApi=RequestApiData.getInstance();
+        requestApi= RequestApiData.getInstance();
     }
 
     public static void setInstance(ApplicationContext instance) {

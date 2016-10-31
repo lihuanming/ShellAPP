@@ -14,9 +14,10 @@
         <android.support.v7.widget.Toolbar android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"
-            app:layout_scrollFlags="scroll|enterAlways">
+            android:background="?attr/colorPrimary">
+            <!--app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+
 
             <TextView
                 android:layout_width="wrap_content"

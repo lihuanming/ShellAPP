@@ -31,7 +31,7 @@ public class Recipes {
         this.recipes = recipes;
     }
 
-    private Recipe getRecipe(int URL,String name){
+    private Recipe getRecipe(int URL, String name){
         Recipe recipe = new Recipe();
         recipe.setImgUrl(URL);
         recipe.setName(name);

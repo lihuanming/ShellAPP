@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.android.volley.VolleyError;
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.adapter.TogatherAdatper;
-import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.model.Store;
 import com.devin.client.shellapp.model.Togathers;
 import com.devin.client.shellapp.utils.VolleyInterface;
@@ -47,8 +46,8 @@ public class TogatherFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        if(tag!=null && !tag.trim().equals(""))
-            ApplicationContext.getQueues().cancelAll(tag);
+//        if(tag!=null && !tag.trim().equals(""))
+//            ApplicationContext.getQueues().cancelAll(tag);
     }
 
     private Togathers togathers = new Togathers();

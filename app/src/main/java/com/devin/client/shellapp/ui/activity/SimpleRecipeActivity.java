@@ -17,6 +17,7 @@ import com.squareup.picasso.Picasso;
 
 public class SimpleRecipeActivity extends AppCompatActivity {
 
+    private  String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,10 +27,11 @@ public class SimpleRecipeActivity extends AppCompatActivity {
         TextView art = (TextView) findViewById(R.id.article);
 
         Bundle bundle=this.getIntent().getExtras();
-        if(bundle.getSerializable("item")!=null && bundle.getSerializable("item") instanceof  Article){
+        if(bundle.getSerializable("item")!=null && bundle.getSerializable("item") instanceof Article){
             Article article=(Article) bundle.getSerializable("item");
+            title = article.getTitle();
             Picasso.with(this)
-                    .load(article.getImages())
+                    .load(article.getImageInt())
                     .into(pic);
             art.setText(article.getContext());
         }else{
@@ -37,8 +39,9 @@ public class SimpleRecipeActivity extends AppCompatActivity {
         }
        
         setSupportActionBar(toolbar);
-        
+
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(title);
         actionBar.setDisplayHomeAsUpEnabled(true);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

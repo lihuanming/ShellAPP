@@ -29,7 +29,7 @@ public class Togathers {
         this.togathers = togathers;
     }
 
-    private Togather getTogather(int url,String name, String interesting,String account,String local,String goodtip,String comment){
+    private Togather getTogather(int url, String name, String interesting, String account, String local, String goodtip, String comment){
         Togather togather = new Togather();
         togather.setAccount(account);
         togather.setImgUrl(url);

@@ -18,6 +18,16 @@ public class Article implements Serializable {
 
 	private String images;
 
+	private int imageInt;
+
+	public int getImageInt() {
+		return imageInt;
+	}
+
+	public void setImageInt(int imageInt) {
+		this.imageInt = imageInt;
+	}
+
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", title=" + title + ", context=" + context + ", images=" + images + ", created="
