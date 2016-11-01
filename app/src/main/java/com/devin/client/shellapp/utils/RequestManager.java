@@ -53,14 +53,15 @@ public class RequestManager {
     /**
      * post 请求数据
      *
-     * @param method    提交的方法 post,get,put,delete
+     * @param method    提交的方法post,get,put,delete
      * @param app_url   公共的接口前缀 http://172.18.8.56:8080/front/barker/api/
      * @param tag_url   接口名称，例如：register(注册接口)
      * @param parameter 请求参数封装对象
      * @param clazz     返回数据封装对象，如果传null，则直接返回String
      * @param callback  接口回调监听
      */
-    public static <T> void post(final int method,final String app_url, final String tag_url, final HashMap<String, String> parameter, Class<T> clazz,
+    public static <T> void post(final int method,final String app_url, final String tag_url,
+                                final HashMap<String, String> parameter, Class<T> clazz,
                                 final HttpResponeCallBack callback) {
         //发送post请求服务器
         post(method,app_url, tag_url, parameter, clazz, callback, Priority.NORMAL);
@@ -70,7 +71,7 @@ public class RequestManager {
     /**
      * post 请求数据
      *
-     * @param method    提交的方法 post,get,put,delete
+     * @param method    提交的方法post,get,put,delete
      * @param app_url   路径
      * @param url       接口名称
      * @param parameter 请求参数封装对象
@@ -78,8 +79,7 @@ public class RequestManager {
      * @param callback  接口回调监听
      * @param priority  指定接口请求线程优先级
      */
-    public static <T> void post(final int method,
-                                final String app_url, final String url,
+    public static <T> void post(final int method,final String app_url, final String url,
                                 final HashMap<String, String> parameter,
                                 final Class<T> clazz,
                                 final HttpResponeCallBack callback, Priority priority) {
@@ -119,7 +119,6 @@ public class RequestManager {
                                 Gson gson = new Gson();
                                 //回调请求成功，同时url和解析的对象
                                 callback.onSuccess(url, gson.fromJson(response, clazz));
-
                             }
 
                         } catch (Exception e) {

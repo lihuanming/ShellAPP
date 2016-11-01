@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f8f8f8"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -10,116 +11,128 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.activity.ForgotPassActivity">
 
-   <!-- <TextView
-        android:id="@+id/txt_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="@string/callback"
-        android:textColor="@color/app_primary"
-        android:textSize="20sp" />
--->
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txt_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/app_primary"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_logo"
+            android:layout_centerHorizontal="true"
+            android:text="@string/forgot_password"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_600" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo"
+        android:layout_marginTop="46dp"
+        android:background="@android:color/white">
+
+        <com.devin.client.shellapp.utils.CleanEditText
+            android:id="@+id/et_phone"
+            style="@style/login_edit_style"
+            android:layout_toLeftOf="@+id/btn_send_verifi_code"
+            android:hint="手机号码"
+            android:inputType="phone"
+            android:maxLength="11" />
+
+        <Button
+            android:id="@+id/btn_send_verifi_code"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="#f3f4f8"
+            android:text="@string/send_verification_code"
+            android:textColor="#B1B1B3"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_verifiCode"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/layout_phone"
+        android:layout_marginTop="0.5dp"
+        android:ems="10"
+        android:hint="验证码"
+        android:inputType="number" />
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_password"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/et_verifiCode"
+        android:layout_marginTop="0.5dp"
+        android:ems="10"
+        android:hint="密码"
+        android:inputType="textPassword" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password">
+
+        <Button
+            android:id="@+id/btn_create_account"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/login_btn"
+            android:text="@string/reset_pwd"
+            android:textColor="@color/grey_0"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_register"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/different_login"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_1000" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/txt_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:clickable="true"
-                    android:text="@string/app_name"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/app_primary"
-                    android:textSize="45sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_logo"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/forgot_password"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grey_600" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/email_login_form"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/loginactivity_logo_from_login"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/edit_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColorHint="@color/grey_0" />
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btn_recover"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_btn"
-                    android:text="@string/action_recover"
-                    android:textColor="@color/grey_0" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
-                    android:gravity="center"
-                    android:text="@string/different_login"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grey_1000" />
-
-                <TextView
-                    android:id="@+id/txt_remembered"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:background="@drawable/noaccount_background"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/remembered_password"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/grey_1000" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/txt_remembered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/noaccount_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="@string/remembered_password"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey_1000" />
+    </LinearLayout>
 </LinearLayout>
-
-
-
-

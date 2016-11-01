@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,172 +8,146 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#f8f8f8"
     tools:context=".ui.activity.RegisterActivity">
 
-  <!--  <TextView
-        android:id="@+id/txt_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:text="@string/callback"
-        android:textColor="@color/app_primary"
-        android:textSize="20sp" />
--->
-    <ScrollView
-        android:id="@+id/register_form"
+    <RelativeLayout
+        android:id="@+id/logo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/txt_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/app_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/app_primary"
+            android:textSize="45sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_logo"
+            android:layout_centerHorizontal="true"
+            android:text="@string/action_register"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_600" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/layout_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:background="@android:color/white"
+        android:layout_below="@+id/logo" >
+
+        <com.devin.client.shellapp.utils.CleanEditText
+            android:id="@+id/et_phone"
+            style="@style/login_edit_style"
+            android:hint="手机号码"
+            android:inputType="phone"
+            android:layout_toLeftOf="@+id/btn_send_verifi_code"
+            android:maxLength="11" />
+        <Button
+            android:id="@+id/btn_send_verifi_code"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:background="#f3f4f8"
+            android:text="@string/send_verification_code"
+            android:textColor="#B1B1B3"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_password"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/et_verifiCode"
+        android:layout_marginTop="0.5dp"
+        android:ems="10"
+        android:hint="密码"
+        android:inputType="textPassword" />
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_repassword"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/et_password"
+        android:layout_marginTop="0.5dp"
+        android:ems="10"
+        android:hint="确认密码"
+        android:inputType="textPassword" />
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_verifiCode"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/layout_phone"
+        android:layout_marginTop="0.5dp"
+        android:ems="10"
+        android:hint="验证码"
+        android:inputType="number" />
+
+    <com.devin.client.shellapp.utils.CleanEditText
+        android:id="@+id/et_nickname"
+        style="@style/login_edit_style"
+        android:layout_below="@+id/et_repassword"
+        android:layout_marginTop="10dp"
+        android:maxLength="32"
+        android:singleLine="true"
+        android:hint="用户名"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/btn_register"
+        style="?android:textAppearanceSmall"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/login_btn"
+        android:text="@string/action_register"
+        android:textColor="@color/grey_0"
+        android:layout_below="@+id/et_nickname"
+        android:layout_alignParentStart="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_register"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:text="@string/different_login"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_1000"
+            android:id="@+id/textView2" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/txt_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/app_name"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="@color/app_primary"
-                    android:textSize="45sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_logo"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/action_register"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grey_600" />
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/email_register_form"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/loginactivity_logo_from_login"
-                android:orientation="vertical"
-                android:weightSum="1">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/edit_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_name"
-                        android:inputType="textAutoComplete"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColorHint="@color/grey_0" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/edit_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/prompt_email"
-                        android:inputType="textEmailAddress"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColorHint="@color/grey_0" />
-                </android.support.design.widget.TextInputLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/edit_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:hint="@string/prompt_password"
-                        android:imeActionId="@+id/login"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColorHint="@color/grey_0" />
-                </android.support.design.widget.TextInputLayout>
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <EditText
-                        android:id="@+id/edit_repassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15dp"
-                        android:hint="@string/prompt_repassword"
-                        android:imeActionId="@+id/login"
-                        android:imeOptions="actionUnspecified"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:padding="8dp"
-                        android:singleLine="true"
-                        android:textColorHint="@color/grey_0" />
-                </android.support.design.widget.TextInputLayout>
-
-                <Button
-                    android:id="@+id/btn_register"
-                    style="?android:textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/login_btn"
-                    android:text="@string/action_register"
-                    android:textColor="@color/grey_0" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp"
-                    android:gravity="center"
-                    android:text="@string/different_login"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/grey_1000" />
-
-                <TextView
-                    android:id="@+id/txt_already_have"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_weight="1"
-                    android:background="@drawable/noaccount_background"
-                    android:clickable="true"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="@string/already_registered"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/grey_1000" />
-
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-
-</LinearLayout>
+        <TextView
+            android:id="@+id/txt_already_have"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/noaccount_background"
+            android:clickable="true"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="@string/already_registered"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey_1000" />
+    </LinearLayout>
+</RelativeLayout>
 
 
 

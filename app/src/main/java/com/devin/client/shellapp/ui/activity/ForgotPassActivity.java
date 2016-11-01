@@ -1,159 +1,191 @@
 package com.devin.client.shellapp.ui.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.devin.client.shellapp.R;
-import com.devin.client.shellapp.utils.CheckNetwork;
+import com.devin.client.shellapp.model.AnalyticalRegistInfo;
+import com.devin.client.shellapp.utils.CleanEditText;
+import com.devin.client.shellapp.utils.HttpResponeCallBack;
+import com.devin.client.shellapp.utils.RequestApiData;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
-import com.devin.client.shellapp.utils.constant.Constants;
+import com.devin.client.shellapp.utils.VerifyCodeManager;
+import com.devin.client.shellapp.utils.constant.UrlConstance;
 
-public class ForgotPassActivity extends Activity implements View.OnClickListener{
-    EditText edit_email;
-    TextView txt_remembered;
-    Button btn_recover;
-    TextView txt_cancel;
-    /*ProgressDialog ringProgressDialog;*/
-    private ForgotPassTask mForgotTask = null;
+import java.util.HashMap;
+import java.util.Map;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
+
+public class ForgotPassActivity extends AppCompatActivity implements HttpResponeCallBack {
+
+    @Bind(R.id.et_phone)
+    CleanEditText mEtPhone;
+    @Bind(R.id.btn_send_verifi_code)
+    Button mBtnSendVerifiCode;
+    @Bind(R.id.et_verifiCode)
+    CleanEditText mEtVerifiCode;
+    @Bind(R.id.et_password)
+    CleanEditText mEtPassword;
+    @Bind(R.id.btn_create_account)
+    Button mBtnCreateAccount;
+    @Bind(R.id.txt_remembered)
+    TextView mTxtRemembered;
+
+    private VerifyCodeManager codeManager;
+    RequestQueue requestQueue;
+    private static final String TAG = "MyTag";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgot_pass);
-
-        String email;
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            email = (extras == null) ? "" : extras.getString(Constants.TAG_EMAIL);
-        } else {
-            email = savedInstanceState.getString(Constants.TAG_EMAIL);
-        }
-
-        edit_email = (EditText) findViewById(R.id.edit_email);
-        edit_email.setText(email);
-
-        txt_remembered = (TextView) findViewById(R.id.txt_remembered);
-        txt_remembered.setOnClickListener(this);
-
-        btn_recover = (Button) findViewById(R.id.btn_recover);
-        btn_recover.setOnClickListener(this);
-        
-        txt_cancel= (TextView) findViewById(R.id.txt_cancel);
-        txt_cancel.setOnClickListener(this);
-
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        ButterKnife.bind(this);
+        initViews();
+        codeManager = new VerifyCodeManager(this, mEtPhone, mBtnSendVerifiCode);
     }
 
-    /**
-     * Attempts to recover the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptRecover() {
-        // Store values at the time of the login attempt.
-        String email = edit_email.getText().toString();
+    private void initViews() {
 
-        boolean cancel = false;
-        View focusView = null;
+        //重置密码按钮
+        mBtnCreateAccount.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                commitInfo();
+            }
 
-        ValidateUserInfo validate = new ValidateUserInfo();
+        });
+        //返回登录页面
+        mTxtRemembered.setOnClickListener(new TextView.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ForgotPassActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        //获取验证码
+        mBtnSendVerifiCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO 请求接口发送验证码
+                if (!ValidateUserInfo.isMobileValid(mEtPhone.getText().toString())) {
+                    Toast.makeText(ForgotPassActivity.this, "请输入正确的手机号码", Toast.LENGTH_SHORT).show();
+                } else {
+                    codeManager.getVerifyCode(VerifyCodeManager.RESET_PWD);
+                    requestQueue = Volley.newRequestQueue(ForgotPassActivity.this);
+                    String url = UrlConstance.KEY_PHONE_VERIFYKYCODE;
+                    final StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("TAG", response);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("TAG", error.toString());
+                        }
+                    }) {
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            HashMap<String, String> header = new HashMap<>();
+                            header.put("Content-Type", "application/json");
+                            header.put("Accept", "application/json");
+                            return header;
+                        }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            edit_email.setError(getString(R.string.error_field_required));
-            focusView = edit_email;
-            cancel = true;
-        } else if (!validate.isEmailValid(email)) {
-            edit_email.setError(getString(R.string.error_invalid_email));
-            focusView = edit_email;
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            //TODO Recover account logic
-            // Show a progress spinner, and kick off a background task to
-            // perform the user recover info attempt.
-            mForgotTask = new ForgotPassTask(email);
-            mForgotTask.execute((Void) null);
-        }
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            String body = "{\"phone\":\"" + mEtPhone.getText().toString() + "\"}";
+                            return body.getBytes();
+                        }
+                    };
+                    requestQueue.add(stringRequest);
+                    Toast.makeText(ForgotPassActivity.this, "短信已发送，请注意查收", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_recover:
-                attemptRecover();
-                break;
-            case R.id.txt_remembered:
-                startActivity(new Intent(ForgotPassActivity.this, LoginActivity.class));
-                finish();
-                break;
-            case R.id.txt_cancel:
-                startActivity(new Intent(ForgotPassActivity.this,MainTabActivity.class));
-                finish();
-                break;
+    protected void onStop() {
+        super.onStop();
+        if (requestQueue!=null){
+            requestQueue.cancelAll(TAG);
         }
     }
 
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class ForgotPassTask extends AsyncTask<Void, Void, Boolean> {
-        private final String mEmail;
+    private void commitInfo() {
+        //获取用户输入的信息
+        String phoneEdit = mEtPhone.getText().toString();
+        String passwordEdit = mEtPassword.getText().toString();
+        String verifyCodeEdit = mEtVerifiCode.getText().toString();
+        if (checkInput(phoneEdit, passwordEdit, verifyCodeEdit)) {
+            Toast.makeText(ForgotPassActivity.this, "重置密码失败", Toast.LENGTH_SHORT).show();
+        } else {
+            //SMSSDK.submitVerificationCode("86", phoneEdit.trim(), verifyCodeEdit.trim());
+            //请求服务端
+            RequestApiData.getInstance().getResetPasswordData( phoneEdit, passwordEdit, verifyCodeEdit,
+                    AnalyticalRegistInfo.class, ForgotPassActivity.this);
+            Toast.makeText(this, "重置密码成功，请登录", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(ForgotPassActivity.this,LoginActivity.class);
+            startActivity(intent);
 
-        ForgotPassTask(String email) {
-            mEmail = email;
         }
+    }
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: check if account already exists against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-            // TODO: if there's no account registered, register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mForgotTask = null;
-            CheckNetwork checkNetwork = new CheckNetwork();
-            if (checkNetwork.isConnected(ForgotPassActivity.this) && success) {
-                Toast.makeText(ForgotPassActivity.this, edit_email.getText() + " 密码修改成功！", Toast.LENGTH_SHORT).show();//Or whatever your recovery method is...
+    private boolean checkInput(String phoneEdit, String passwordEdit, String verifyCodeEdit) {
+        if (TextUtils.isEmpty(phoneEdit)) {
+            Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
+        } else {
+            if (!ValidateUserInfo.isMobileValid(phoneEdit)) {
+                Toast.makeText(this, "手机号码格式不正确", Toast.LENGTH_SHORT).show();
+            } else if (TextUtils.isEmpty(verifyCodeEdit)) {
+                Toast.makeText(this, "请输入验证码", Toast.LENGTH_SHORT).show();
+            } else if (!ValidateUserInfo.isPasswordValid(passwordEdit)) {
+                Toast.makeText(this, "请输入6-16个密码", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(ForgotPassActivity.this, "网络出错！", Toast.LENGTH_SHORT).show();
+                return true;
             }
         }
+        return false;
+    }
 
-        @Override
-        protected void onCancelled() {
-            mForgotTask = null;
-        }
+
+    @Override
+    public void onResponeStart(String apiName) {
+        // Toast.makeText(this, "正在请求数据...", Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public void onBackPressed() {
-        startActivity(new Intent(ForgotPassActivity.this, LoginActivity.class));
-        finish();
+    public void onLoading(String apiName, long count, long current) {
+        // Toast.makeText(this, "Loading...", Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onSuccess(String apiName, Object object) {
+
+    }
+
+    @Override
+    public void onFailure(String apiName, Throwable throwable, int errorNo, String strMsg) {
+        // Toast.makeText(this, "Failure...", Toast.LENGTH_SHORT).show();
+    }
+
 }
