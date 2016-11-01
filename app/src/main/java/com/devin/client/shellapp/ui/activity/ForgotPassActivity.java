@@ -20,7 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.model.AnalyticalRegistInfo;
 import com.devin.client.shellapp.utils.CleanEditText;
-import com.devin.client.shellapp.utils.HttpResponeCallBack;
+import com.devin.client.shellapp.utils.HttpResponseCallBack;
 import com.devin.client.shellapp.utils.RequestApiData;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
 import com.devin.client.shellapp.utils.VerifyCodeManager;
@@ -33,7 +33,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 
-public class ForgotPassActivity extends AppCompatActivity implements HttpResponeCallBack {
+public class ForgotPassActivity extends AppCompatActivity implements HttpResponseCallBack {
 
     @Bind(R.id.et_phone)
     CleanEditText mEtPhone;
