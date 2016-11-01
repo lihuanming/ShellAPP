@@ -15,8 +15,8 @@ public class UrlConstance {
     public static final String ACCESSTOKEN_KEY ="accesstoken";
 
     //签约公钥，即客户端与服务器协商订的一个公钥
-    public static final String PUBLIC_KEY ="http://172.18.8.56:8080";
-    public static final String APP_URL = "http://172.18.8.56:8080/front/barker/api/";
+    public static final String PUBLIC_KEY ="http://119.29.161.112:8086";
+    public static final String APP_URL = "http://119.29.161.112:8086/front/barker/user/api/";
 
     //注册用户接口
     public static final String KEY_REGIST_INFO ="register";
@@ -25,5 +25,7 @@ public class UrlConstance {
     public static final String KEY_LOGIN_INFO ="login";
 
     //获取用户基本信息
-    public static final String KEY_USER_BASE_INFO ="login";
+    public static final String KEY_USER_BASE_INFO ="user";
+    //获取手机验证码
+    public static final String KEY_PHONE_VERIFYKYCODE="http://119.29.161.112:8086/front/barker/user/api/code";
 }
