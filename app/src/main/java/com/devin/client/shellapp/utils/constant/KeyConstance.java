@@ -21,6 +21,10 @@ public class KeyConstance {
     public static final String IS_USER_ACCOUNT ="account";
     //用户的password
     public static final String IS_USER_PASSWORD ="password";
-    //用户的email
-    public static final String IS_USER_EMAIL ="email";
+    //用户的手机号码
+    public static final String IS_USER_PHONE ="phone";
+    //短信验证码：APP_KEY
+    public static final String APP_KEY="187c3401d71f3";
+    //短信验证码：APP_SECRET
+    public static final String APP_SECRET="01cf67cdf836179f5190abe9be33daa4";
 }
