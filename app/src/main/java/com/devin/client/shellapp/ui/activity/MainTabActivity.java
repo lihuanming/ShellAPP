@@ -15,7 +15,6 @@ import com.devin.client.shellapp.ui.fragment.MainFragment;
 import com.devin.client.shellapp.ui.fragment.RecipeFragment;
 import com.devin.client.shellapp.ui.fragment.ShoppingFragment;
 import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
-import com.devin.client.shellapp.ui.fragment.nologinFragment;
 import com.devin.client.shellapp.utils.ViewFindUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -69,11 +68,12 @@ public class MainTabActivity extends AppCompatActivity {
         fragments2.add(ShoppingFragment.newInstance());
         fragments2.add(RecipeFragment.newInstance());
         fragments2.add(EyeFragment.newInstance());
-        if(sharedPreferences.getString("account",null)==null){
+        fragments2.add(UserInfoFragment.newInstance());
+       /* if(sharedPreferences.getString("account",null)==null){
             fragments2.add(nologinFragment.newInstance());
         }else{
             fragments2.add(UserInfoFragment.newInstance());
-        }
+        }*/
     
         for (int i = 0; i < titles.length; i++) {
             tabs.add(new TabEntity(titles[i], iconSelectIds[i], iconUnselectIds[i]));

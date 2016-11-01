@@ -7,9 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +17,7 @@ import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.model.UserBaseInfo;
 import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
 import com.devin.client.shellapp.utils.HttpResponseCallBack;
+import com.devin.client.shellapp.utils.CleanEditText;
 import com.devin.client.shellapp.utils.RequestApiData;
 import com.devin.client.shellapp.utils.UserPreference;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
@@ -30,18 +30,19 @@ import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity implements HttpResponseCallBack {
 
-    @Bind(R.id.txt_cancel)
-    TextView mTxtCancel;
-    @Bind(R.id.txt_email)
-    AutoCompleteTextView mTxtEmail;
-    @Bind(R.id.txt_password)
-    EditText mTxtPassword;
-    @Bind(R.id.txt_forgot)
-    TextView mTxtForgot;
-    @Bind(R.id.txt_create)
-    TextView mTxtCreate;
-    @Bind(R.id.email_sign_in_button)
-    Button mEmailSignInButton;
+    @Bind(R.id.iv_cancel)
+    ImageView mIvCancel;
+    @Bind(R.id.et_phone)
+    CleanEditText mEtPhone;
+    @Bind(R.id.et_password)
+    CleanEditText mEtPassword;
+    @Bind(R.id.btn_login)
+    Button mBtnLogin;
+    @Bind(R.id.tv_create_account)
+    TextView mTvCreateAccount;
+    @Bind(R.id.tv_forget_password)
+    TextView mTvForgetPassword;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +50,12 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         initView();
+        //拿到初始图
+      /*  Bitmap initBitmap = BitmapUtil.drawableToBitmap(getResources().getDrawable(R.drawable.logo3));
+
+        //处理得到模糊效果的图
+        Bitmap blurBitmap = BlurBitmapUtil.blurBitmap(this, initBitmap, 20f);*/
+        //mBlurImage.setImageBitmap(blurBitmap);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
@@ -57,7 +64,7 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
     * */
     private void initView() {
         //点击“注册”
-        mTxtCreate.setOnClickListener(new View.OnClickListener() {
+        mTvCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
@@ -66,7 +73,7 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
             }
         });
         //点击“忘记密码”
-        mTxtForgot.setOnClickListener(new View.OnClickListener() {
+        mTvForgetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginActivity.this, ForgotPassActivity.class);
@@ -75,14 +82,14 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
             }
         });
         //点击“取消”
-        mTxtCancel.setOnClickListener(new View.OnClickListener() {
+        mIvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
         //点击登录按钮
-        mEmailSignInButton.setOnClickListener(new Button.OnClickListener() {
+        mBtnLogin.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
                 clickLogin();
@@ -91,34 +98,35 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
     }
 
     private void clickLogin() {
-        String email = mTxtEmail.getText().toString();//邮箱
-        String password = mTxtPassword.getText().toString();//密码
-        if (checkInput(email,password)){
-           //输入信息不匹配，登陆失败
-            Toast.makeText(this, "邮箱或密码错误", Toast.LENGTH_SHORT).show();
-        }else {
+        String phoneEdit = mEtPhone.getText().toString();//邮箱
+        String passwordEdit = mEtPassword.getText().toString();//密码
+        if (checkInput(phoneEdit, passwordEdit)) {
+            //输入信息不匹配，登陆失败
+            Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT).show();
+        } else {
             //请求服务器获取数据登录账号
-            RequestApiData.getInstance().getLoginData(email, password, UserBaseInfo.class, LoginActivity.this);
+            RequestApiData.getInstance().getLoginData(phoneEdit, passwordEdit, UserBaseInfo.class, LoginActivity.this);
         }
     }
 
     /**
      * 检查输入
-     * @param email
-     * @param password
+     *
+     * @param phoneEdit
+     * @param passwordEdit
      * @return
      */
-    private boolean checkInput(String email, String password) {
+    private boolean checkInput(String phoneEdit, String passwordEdit) {
         //账号为空时提示
-        if (email==null||email.trim().equals("")){
-            //Toast.makeText(this, R.string.tip_account_empty, Toast.LENGTH_LONG).show();
-        }else {
-            //账号不匹配邮箱格式
-            if (!ValidateUserInfo.isEmailValid(email)){
-                //Toast.makeText(this, R.string.tip_account_regex_not_right, Toast.LENGTH_LONG).show();
-            }else if (password==null||password.trim().equals("")){
-               // Toast.makeText(this, R.string.tip_password_can_not_be_empty, Toast.LENGTH_SHORT).show();
-            }else {
+        if (phoneEdit == null || phoneEdit.trim().equals("")) {
+            Toast.makeText(this, R.string.tip_account_empty, Toast.LENGTH_LONG).show();
+        } else {
+            //账号不匹配手机号码格式
+            if (!ValidateUserInfo.isMobileValid(phoneEdit)) {
+                 Toast.makeText(this, R.string.tip_account_regex_not_right, Toast.LENGTH_LONG).show();
+            } else if (passwordEdit == null || passwordEdit.trim().equals("")) {
+                Toast.makeText(this, R.string.tip_password_can_not_be_empty, Toast.LENGTH_SHORT).show();
+            } else {
                 return true;
             }
         }
@@ -149,9 +157,9 @@ public class LoginActivity extends AppCompatActivity implements HttpResponseCall
                     ApplicationContext.getInstance().setBaseUser(info);//保存到Application中
                     //保存到SP中
                     UserPreference.save(KeyConstance.IS_USER_ID, info.getUserid());
-                    UserPreference.save(KeyConstance.IS_USER_EMAIL, info.getEmail());
-                    UserPreference.save(KeyConstance.IS_USER_ACCOUNT, info.getName());
-                    UserPreference.save(KeyConstance.IS_USER_PASSWORD, mTxtPassword.getText().toString());
+                    UserPreference.save(KeyConstance.IS_USER_PHONE, info.getPhone());
+                    UserPreference.save(KeyConstance.IS_USER_ACCOUNT, info.getNickname());
+                    UserPreference.save(KeyConstance.IS_USER_PASSWORD, mEtPassword.getText().toString());
 
                     Intent intent = new Intent(LoginActivity.this, UserInfoFragment.class);
                     startActivity(intent);

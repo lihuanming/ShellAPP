@@ -248,11 +248,11 @@
     <!-- Strings related to create account -->
     <string name="already_registered">已有账号？登陆</string>
     <string name="prompt_name">用户名</string>
-    <string name="action_register">注册</string>
+    <string name="action_register">创建账号</string>
 
     <!-- Strings related to login -->
     <string name="user_login">登录</string>
-    <string name="prompt_email">邮箱</string>
+    <string name="phone">手机号码</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登陆</string>
     <string name="different_login">or</string>
@@ -263,11 +263,26 @@
     <string name="error_incorrect_password">邮箱或密码不正确</string>
     <string name="error_field_required">必须输入！</string>
     <string name="forgot_password">忘记密码？</string>
-    <string name="create_account">注册</string>
+    <string name="create_account">创建账号</string>
     <string name="cancel">取消</string>
     <!-- Strings related to forgot account-->
     <string name="action_recover">找回密码</string>
     <string name="remembered_password">想起密码了？</string>
     <string name="prompt_repassword">确认密码</string>
     <string name="error_invalid_repassword">两次密码不一致！</string>
+    <string name="tip_account_empty">邮箱不能为空</string>
+    <string name="tip_account_regex_not_right">邮箱格式不正确</string>
+    <string name="tip_password_can_not_be_empty">密码不能为空</string>
+    <string name="tip_name_can_not_be_empty">用户名不能为空</string>
+    <string name="tip_name_regex_not_right">用户名须由5-17位非特殊字符组成</string>
+    <string name="tip_email_can_not_be_empty">邮箱不能为空</string>
+    <string name="tip_email_regex_not_right">邮箱的格式不正确</string>
+    <string name="tip_please_input_6_32_password">请输入6-32个密码</string>
+    <string name="tip_Entered_passwords_differ">两次输入的密码不一致</string>
+    <string name="send_verification_code">获取验证码</string>
+    <string name="count_down">%ss</string>
+    <string name="tip_please_input_phone">请输入手机号码</string>
+    <string name="tip_phone_regex_not_right">手机号码格式不正确</string>
+    <string name="password">密码</string>
+    <string name="reset_pwd">重置密码</string>
 </resources>

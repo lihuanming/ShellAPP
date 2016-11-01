@@ -15,9 +15,9 @@ public class UserBaseInfo implements Serializable{
     //	 {"ret":"0","errcode":"0","msg":"接口调用成功","name":"erom","userhead":"/img/users/head/avatar.png",
     //	"userid":"11653","email":"123456789@qq.com","role":"0"}
     private String userid;//用户id
-    private String name;//昵称
+    private String nickname;//昵称
     private String userhead;//用户头像路径
-    private String email;//用户邮件
+    private String phone;//手机号码
     private String ret;//请求状态码
     private String errcode;//错误码
     private String msg;
@@ -30,12 +30,12 @@ public class UserBaseInfo implements Serializable{
         this.userid = userid;
     }
 
-    public String getName() {
-        return name;
+    public String getNickname() {
+        return nickname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getUserhead() {
@@ -46,12 +46,12 @@ public class UserBaseInfo implements Serializable{
         this.userhead = userhead;
     }
 
-    public String getEmail() {
-        return email;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getRet() {
