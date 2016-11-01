@@ -1,8 +1,8 @@
 package com.devin.client.shellapp.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +12,12 @@ import android.view.ViewGroup;
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.adapter.RecipeAdapter;
 import com.devin.client.shellapp.model.Recipes;
+import com.devin.client.shellapp.ui.activity.SearchActivity;
+import com.uuzuche.lib_zxing.activity.CaptureActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by 书凡 on 2015-11-18.
@@ -50,25 +53,26 @@ public class RecipeFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
         ButterKnife.bind(this, rootView);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         recipeAdapter = new RecipeAdapter(getActivity(), new Recipes());
 
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return recipeAdapter.isHeader(position) ? 2 : 1;
-            }
-        });
-
-        recycler.setLayoutManager(gridLayoutManager);
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         recycler.setAdapter(recipeAdapter);
 
         return rootView;
     }
 
+    @OnClick(R.id.search)
+    public void startSearch(){
+        startActivity(new Intent(getActivity(), SearchActivity.class));
+    }
+
+    @OnClick(R.id.zxing)
+    public void startZxing(){
+        Intent intent = new Intent(getActivity(), CaptureActivity.class);
+        startActivityForResult(intent, 0);
+    }
 
 
     @Override

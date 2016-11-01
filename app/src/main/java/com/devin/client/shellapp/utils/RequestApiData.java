@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class RequestApiData {
     private volatile static RequestApiData instance = null;
-    private HttpResponeCallBack mCallBack = null;
+    private HttpResponseCallBack mCallBack = null;
 
     private RequestApiData() {
     }
@@ -48,7 +48,7 @@ public class RequestApiData {
      *                 请求方式：POST
      */
     public void getRegisterData(String name, String email, String password,
-                                Class<AnalyticalRegistInfo> clazz, HttpResponeCallBack callBack) {
+                                Class<AnalyticalRegistInfo> clazz, HttpResponseCallBack callBack) {
         mCallBack = callBack;
         //这是每一接口的唯一标示
         String tagUrl = UrlConstance.KEY_REGIST_INFO;//注册接口
@@ -82,7 +82,7 @@ public class RequestApiData {
      */
     public void getLoginData(String email ,String password,
                              Class<UserBaseInfo> clazz,
-                             HttpResponeCallBack callback) {
+                             HttpResponseCallBack callback) {
         mCallBack = callback;
         //这是每一个接口的唯一标示
         String tagUrl = UrlConstance.KEY_LOGIN_INFO;//登录接口

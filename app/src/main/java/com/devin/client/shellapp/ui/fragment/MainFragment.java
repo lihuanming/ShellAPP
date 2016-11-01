@@ -72,6 +72,37 @@ public class MainFragment extends Fragment {
                 startActivity(new Intent(getActivity(), SearchActivity.class));
             }
         });
+//        final String phone = "131";
+//        RequestQueue queue = Volley.newRequestQueue(getActivity());
+//        String url = "http://119.29.161.112:8086/front/barker/user/api/code";
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                Log.i("TAG",response);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.i("TAG",error.toString());
+//            }
+//        }){
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                HashMap<String, String> headers = new HashMap<>();
+//                headers.put("Content-Type", "application/json");
+//                headers.put("Accept","application/json");
+//                return headers;
+//            }
+//
+//            @Override
+//            public byte[] getBody() throws AuthFailureError {
+//                String body = "{ \"phone\": \""+phone+"\"}";
+//                return body.getBytes();
+//            }
+//        };
+//        queue.add(stringRequest);
+
     }
 
     @OnClick(R.id.zxing)

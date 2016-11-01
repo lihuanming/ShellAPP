@@ -17,7 +17,7 @@ import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.model.UserBaseInfo;
 import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
-import com.devin.client.shellapp.utils.HttpResponeCallBack;
+import com.devin.client.shellapp.utils.HttpResponseCallBack;
 import com.devin.client.shellapp.utils.RequestApiData;
 import com.devin.client.shellapp.utils.UserPreference;
 import com.devin.client.shellapp.utils.ValidateUserInfo;
@@ -28,7 +28,7 @@ import com.devin.client.shellapp.utils.constant.UrlConstance;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class LoginActivity extends AppCompatActivity implements HttpResponeCallBack {
+public class LoginActivity extends AppCompatActivity implements HttpResponseCallBack {
 
     @Bind(R.id.txt_cancel)
     TextView mTxtCancel;

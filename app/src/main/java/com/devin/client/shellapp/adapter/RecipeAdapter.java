@@ -13,7 +13,9 @@ import android.widget.TextView;
 import com.bigkoo.convenientbanner.CBPageAdapter;
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.OnItemClickListener;
 import com.devin.client.shellapp.R;
+import com.devin.client.shellapp.model.Article;
 import com.devin.client.shellapp.model.Recipes;
 import com.devin.client.shellapp.ui.activity.SimpleRecipeActivity;
 import com.squareup.picasso.Picasso;
@@ -58,8 +60,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            image.add(R.mipmap.recipe_header_1);
-            image.add(R.mipmap.togather_2);
+            image.add(R.mipmap.recipe_header_6);
+            image.add(R.mipmap.recipe_header_2);
 
             convenientBanner.setPages(new CBViewHolderCreator<LocalImageHolderView>() {
                 @Override
@@ -69,7 +71,31 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }, image)
                     .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
                     .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-                    .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer);
+                    .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer)
+            .setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Intent intent = new Intent(context, SimpleRecipeActivity.class);
+                    Bundle bundle=new Bundle();
+                    Article article = new Article();
+                    switch (position){
+                        case 0:
+                            article.setImageInt(R.mipmap.recipe_header_6);
+                            article.setTitle("巧克力");
+                            article.setContext(context.getResources().getString(R.string.qiaokeli));
+                            break;
+                        case 1:
+                            article.setImageInt(R.mipmap.recipe_header_2);
+                            article.setTitle("黑加仑冻芝士");
+                            article.setContext(context.getResources().getString(R.string.longstring));
+                            break;
+                    }
+                    bundle.putSerializable("item",article);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+
+                }
+            });
         }
     }
 
@@ -91,31 +117,65 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemViewType(int position) {
-        return isHeader(position) ? ITEM_VIEW_TYPE_HEADER : position;
+        return position;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
+        View view_top = LayoutInflater.from(context).inflate(R.layout.content_recipe_header, parent, false);
+        View empty_view = LayoutInflater.from(context).inflate(R.layout.emty_layout,parent,false);
+        View cardViewRecipe = LayoutInflater.from(context).inflate(R.layout.card_view_recipe, parent, false);
         if (viewType == 0) {
-            View view_top = LayoutInflater.from(context).inflate(R.layout.content_recipe_header, parent, false);
             return new HeaderViewHolder(view_top);
         }else if (viewType == recipes.getRecipes().size() + 1){
-            View view = LayoutInflater.from(context).inflate(R.layout.emty_layout,parent,false);
-            return new EmtpyViewHolder(view);
+            return new EmtpyViewHolder(empty_view);
         }
         else {
-            View view = LayoutInflater.from(context).inflate(R.layout.card_view_recipe, parent, false);
-            view.setOnClickListener(new View.OnClickListener() {
+            cardViewRecipe.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, SimpleRecipeActivity.class);
                     Bundle bundle=new Bundle();
-                    bundle.putSerializable("item","test");
+                    Article article = new Article();
+                    switch (viewType){
+                        case 1:
+                            article.setImageInt(R.mipmap.recipe_head_1);
+                            article.setTitle("原味烤芝士");
+                            article.setContext(context.getResources().getString(R.string.yuanweikaozhishi));
+                            break;
+                        case 2:
+                            article.setImageInt(R.mipmap.recipe_header_2);
+                            article.setTitle("黑加仑冻芝士");
+                            article.setContext(context.getResources().getString(R.string.longstring));
+                            break;
+                        case 3:
+                            article.setImageInt(R.mipmap.recipe_header_3);
+                            article.setTitle("脆香曲奇");
+                            article.setContext(context.getResources().getString(R.string.cuixiangquqi));
+                            break;
+                        case 4:
+                            article.setImageInt(R.mipmap.recipe_header_4);
+                            article.setTitle("黑森林");
+                            article.setContext(context.getResources().getString(R.string.heisenlin));
+                            break;
+                        case 5:
+                            article.setImageInt(R.mipmap.recipe_header_5);
+                            article.setTitle("牛角");
+                            article.setContext(context.getResources().getString(R.string.niujiao));
+                            break;
+                        case 6:
+                            article.setImageInt(R.mipmap.recipe_header_6);
+                            article.setTitle("巧克力");
+                            article.setContext(context.getResources().getString(R.string.qiaokeli));
+                            break;
+                    }
+
+                    bundle.putSerializable("item",article);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
             });
-            return new RecipeViewHolder(view);
+            return new RecipeViewHolder(cardViewRecipe);
         }
     }
 

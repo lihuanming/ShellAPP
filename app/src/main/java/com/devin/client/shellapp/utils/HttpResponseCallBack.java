@@ -10,7 +10,7 @@ package com.devin.client.shellapp.utils;
  * @updateDes ${TODO}
  */
 
-public interface HttpResponeCallBack {
+public interface HttpResponseCallBack {
     public void onResponeStart(String apiName);
 
     /**

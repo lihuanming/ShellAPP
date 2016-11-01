@@ -47,7 +47,7 @@ public class SimpleRecipeActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "已收藏", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "good tip!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

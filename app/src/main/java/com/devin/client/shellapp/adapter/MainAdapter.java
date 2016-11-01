@@ -103,21 +103,45 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             cheer1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(context,SimpleRecipeActivity.class);
+                    Bundle bundle = new Bundle();
+                    Article article = new Article();
+                    article.setImageInt(R.mipmap.cheer_1);
+                    article.setTitle("巧克力蛋糕");
+                    article.setContext(context.getResources().getString(R.string.qiaokelidangao));
+                    bundle.putSerializable("item",article);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }
             });
 
             cheer2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(context,SimpleRecipeActivity.class);
+                    Bundle bundle = new Bundle();
+                    Article article = new Article();
+                    article.setImageInt(R.mipmap.cheer_2);
+                    article.setTitle("甜甜圈");
+                    article.setContext(context.getResources().getString(R.string.tiantianquan));
+                    bundle.putSerializable("item",article);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }
             });
 
             cheer3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(context,SimpleRecipeActivity.class);
+                    Bundle bundle = new Bundle();
+                    Article article = new Article();
+                    article.setImageInt(R.mipmap.cheer_4);
+                    article.setTitle("马芬蛋糕");
+                    article.setContext(context.getResources().getString(R.string.mafendangao));
+                    bundle.putSerializable("item",article);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
                 }
             });
 

@@ -29,7 +29,6 @@ public class RequestManager {
     private static RequestQueue mRequestQueue;
     private static ImageLoader mImageLoader;
 
-
     private synchronized static void initRequestQueue() {
         if (mRequestQueue == null) {
             //创建一个请求队列
@@ -61,7 +60,7 @@ public class RequestManager {
      * @param callback  接口回调监听
      */
     public static <T> void post(final int method,final String app_url, final String tag_url, final HashMap<String, String> parameter, Class<T> clazz,
-                                final HttpResponeCallBack callback) {
+                                final HttpResponseCallBack callback) {
         //发送post请求服务器
         post(method,app_url, tag_url, parameter, clazz, callback, Priority.NORMAL);
     }
@@ -82,7 +81,7 @@ public class RequestManager {
                                 final String app_url, final String url,
                                 final HashMap<String, String> parameter,
                                 final Class<T> clazz,
-                                final HttpResponeCallBack callback, Priority priority) {
+                                final HttpResponseCallBack callback, Priority priority) {
         if (callback != null) {
             callback.onResponeStart(url);//回调请求开始
         }
@@ -150,9 +149,8 @@ public class RequestManager {
                 return getPostApiParmes(parameter);
             }
         };
-
         //添加请求到请求队列中
-        addRequest(request, url);
+        addRequest(request, builder.toString());
     }
 
     /*

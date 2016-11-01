@@ -57,7 +57,7 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ((SearchViewHolder)holder).textView.setText(searchList.get(position).getTitle());
-        ((SearchViewHolder)holder).content.setText(searchList.get(position).getTitle());
+        ((SearchViewHolder)holder).content.setText(searchList.get(position).getContent());
         if (recycleritemClickLisentner != null){
             ((SearchViewHolder)holder).linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
