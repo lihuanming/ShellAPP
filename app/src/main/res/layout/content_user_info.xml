@@ -31,6 +31,7 @@
                 app:civ_border_width="2dp"
                 app:civ_border_color="@color/border_color"/>
             <TextView
+                android:id="@+id/nickname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -38,6 +39,7 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp"/>
             <TextView
+                android:id="@+id/user_Id"
                 android:paddingTop="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -49,118 +51,190 @@
         </LinearLayout>
 
     </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:src="@android:color/darker_gray"/>
     <LinearLayout
-        android:id="@+id/user_info"
-        android:orientation="horizontal"
-        android:padding="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <ImageView
-            android:src="@mipmap/tab_home_unselect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:paddingStart="10dp"
-            android:padding="3dp"
-            android:textSize="20dp"
-            android:text="我的主页"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <RelativeLayout
-            android:padding="5dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_alignParentEnd="true"
-                android:src="@mipmap/arrow"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
-        </RelativeLayout>
+            android:layout_height="0.5dp"
+            android:src="@android:color/darker_gray"/>
+        <!--  <LinearLayout
+              android:id="@+id/user_info"
+              android:orientation="horizontal"
+              android:padding="10dp"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
 
-    </LinearLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:src="@android:color/darker_gray"/>
-        <LinearLayout
-            android:id="@+id/user_goods"
-            android:orientation="horizontal"
+              <ImageView
+                  android:src="@mipmap/tab_home_unselect"
+                  android:layout_width="25dp"
+                  android:layout_height="25dp" />
+
+              <TextView
+                  android:paddingStart="10dp"
+                  android:padding="3dp"
+                  android:textSize="15sp"
+                  android:text="我的主页"
+                  android:layout_width="wrap_content"
+                  android:layout_height="match_parent"
+                  android:paddingLeft="10dp" />
+
+              <RelativeLayout
+                  android:padding="5dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content">
+                  <ImageView
+                      android:layout_alignParentEnd="true"
+                      android:src="@mipmap/arrow"
+                      android:layout_width="25dp"
+                      android:layout_height="25dp"
+                      android:layout_alignParentRight="true" />
+              </RelativeLayout>
+
+          </LinearLayout>-->
+        <RelativeLayout
+            android:id="@+id/user_info"
             android:padding="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="40dp">
 
-            <ImageView
-                android:src="@mipmap/tab_me_unselect"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:paddingStart="10dp"
-                android:padding="3dp"
-                android:textSize="20dp"
-                android:text="我的资料"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
-            <RelativeLayout
-                android:padding="5dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true">
                 <ImageView
-                    android:layout_alignParentEnd="true"
+                    android:src="@mipmap/tab_home_unselect"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_marginTop="1dp"
+                    android:textSize="16sp"
+                    android:text="我的主页"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent" />
+
+                <ImageView
                     android:src="@mipmap/arrow"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp" />
-            </RelativeLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="120dp"/>
 
-        </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:src="@android:color/darker_gray"/>
-    <LinearLayout
-        android:id="@+id/start"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:src="@mipmap/collection"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:paddingStart="10dp"
-            android:padding="3dp"
-            android:textSize="20dp"
-            android:text="我收藏的食谱"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
-        <RelativeLayout
-            android:padding="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_alignParentEnd="true"
-                android:src="@mipmap/arrow"
-                android:layout_width="25dp"
-                android:layout_height="25dp" />
+            </LinearLayout>
         </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@android:color/darker_gray"/>
+        <!-- <LinearLayout
+             android:id="@+id/user_goods"
+             android:orientation="horizontal"
+             android:padding="10dp"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
+             <ImageView
+                 android:src="@mipmap/tab_me_unselect"
+                 android:layout_width="25dp"
+                 android:layout_height="25dp" />
+
+             <TextView
+                 android:paddingStart="10dp"
+                 android:padding="3dp"
+                 android:textSize="15sp"
+                 android:text="我的资料"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 android:paddingLeft="10dp" />
+             <RelativeLayout
+                 android:padding="5dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+                 <ImageView
+                     android:layout_alignParentEnd="true"
+                     android:src="@mipmap/arrow"
+                     android:layout_width="25dp"
+                     android:layout_height="25dp"
+                     android:layout_alignParentRight="true" />
+             </RelativeLayout>
+
+         </LinearLayout>-->
+        <RelativeLayout
+            android:id="@+id/user_goods"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true">
+                <ImageView
+                    android:src="@mipmap/tab_me_unselect"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_marginTop="1dp"
+                    android:textSize="16sp"
+                    android:text="我的资料"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:src="@mipmap/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="120dp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@android:color/darker_gray"/>
+        <RelativeLayout
+            android:id="@+id/start"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true">
+                <ImageView
+                    android:src="@mipmap/collection"
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_marginTop="1dp"
+                    android:textSize="16sp"
+                    android:text="我收藏的食谱"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:src="@mipmap/arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="18dp"
+                    android:layout_marginStart="120dp"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:src="@android:color/darker_gray"/>
     </LinearLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:src="@android:color/darker_gray"/>
 
 </LinearLayout>
