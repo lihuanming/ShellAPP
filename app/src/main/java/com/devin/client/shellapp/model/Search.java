@@ -18,7 +18,6 @@ public class Search implements Serializable{
 
     private int image;
 
-    private int type;
 
     public int getId() {
         return id;
@@ -50,13 +49,5 @@ public class Search implements Serializable{
 
     public void setImage(int image) {
         this.image = image;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
     }
 }

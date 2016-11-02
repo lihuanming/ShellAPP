@@ -1,6 +1,8 @@
 package com.devin.client.shellapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +12,10 @@ import android.widget.ImageView;
 import com.bigkoo.convenientbanner.CBPageAdapter;
 import com.bigkoo.convenientbanner.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.ConvenientBanner;
+import com.bigkoo.convenientbanner.OnItemClickListener;
 import com.devin.client.shellapp.R;
+import com.devin.client.shellapp.model.Article;
+import com.devin.client.shellapp.ui.activity.SimpleRecipeActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +67,35 @@ public class ShoppingAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }, image)
                     .setPageIndicator(new int[]{R.mipmap.ic_page_indicator, R.mipmap.ic_page_indicator_focused})
                     .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL)
-                    .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer);
+                    .setPageTransformer(ConvenientBanner.Transformer.DefaultTransformer)
+            .setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    Intent intent = new Intent(context,SimpleRecipeActivity.class);
+                    Bundle bundle = new Bundle();
+                    Article article = new Article();
+                    switch (position){
+                        case 0:
+                            article.setImageInt(R.mipmap.cheer_1);
+                            article.setTitle("巧克力蛋糕");
+                            article.setContext(context.getResources().getString(R.string.qiaokelidangao));
+                            break;
+                        case 1:
+                            article.setImageInt(R.mipmap.cheer_2);
+                            article.setTitle("甜甜圈");
+                            article.setContext(context.getResources().getString(R.string.tiantianquan));
+                            break;
+                        case 2:
+                            article.setImageInt(R.mipmap.cheer_4);
+                            article.setTitle("马芬蛋糕");
+                            article.setContext(context.getResources().getString(R.string.mafendangao));
+                            break;
+                    }
+                    bundle.putSerializable("item",article);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 

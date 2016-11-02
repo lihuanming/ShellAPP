@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/grey_100">
 
     <com.bigkoo.convenientbanner.ConvenientBanner
@@ -16,21 +16,27 @@
         android:layout_below="@+id/convenientBanner"
         android:orientation="horizontal"
         android:padding="5dp"
+        android:layout_marginTop="10dp"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
             android:src="@android:color/darker_gray"
-            android:layout_width="5dp"
-            android:layout_height="23dp" />
+            android:layout_width="8dp"
+            android:layout_height="30dp" />
 
         <TextView
-            android:textSize="18sp"
+            android:layout_marginLeft="6dp"
+            android:textSize="24sp"
             android:text="星级食谱"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
     </LinearLayout>
+    <View
+        android:background="#f3f3f3"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
 
 </LinearLayout>

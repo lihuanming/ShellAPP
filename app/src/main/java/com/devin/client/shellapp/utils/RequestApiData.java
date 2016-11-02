@@ -19,7 +19,7 @@ import java.util.HashMap;
 
 public class RequestApiData {
     private volatile static RequestApiData instance = null;
-    private HttpResponeCallBack mCallBack = null;
+    private HttpResponseCallBack mCallBack = null;
 
     private RequestApiData() {
     }
@@ -49,7 +49,7 @@ public class RequestApiData {
      *                      请求方式：POST
      */
     public void getRegisterData(String nickName, String phone, String password, String verifyCode,
-                                Class<AnalyticalRegistInfo> clazz, HttpResponeCallBack callBack) {
+                                Class<AnalyticalRegistInfo> clazz, HttpResponseCallBack callBack) {
         mCallBack = callBack;
         //这是每一接口的唯一标示
         String tagUrl = UrlConstance.KEY_REGIST_INFO;//注册接口
@@ -85,7 +85,7 @@ public class RequestApiData {
      */
     public void getLoginData(String phone ,String password,
                              Class<UserBaseInfo> clazz,
-                             HttpResponeCallBack callback) {
+                             HttpResponseCallBack callback) {
         mCallBack = callback;
         //这是每一个接口的唯一标示
         String tagUrl = UrlConstance.KEY_LOGIN_INFO;//登录接口
@@ -119,7 +119,7 @@ public class RequestApiData {
      *                      请求方式：POST
      */
     public void getResetPasswordData( String phone, String password, String verifyCode,
-                                Class<AnalyticalRegistInfo> clazz, HttpResponeCallBack callBack) {
+                                Class<AnalyticalRegistInfo> clazz, HttpResponseCallBack callBack) {
         mCallBack = callBack;
         //这是每一接口的唯一标示
         String tagUrl = UrlConstance.KEY_REGIST_INFO;//注册接口
@@ -145,7 +145,7 @@ public class RequestApiData {
      *
      * 获取手机验证码
      */
-    public void getPhoneVerifyCode(String phone,  HttpResponeCallBack callBack){
+    public void getPhoneVerifyCode(String phone,  HttpResponseCallBack callBack){
         mCallBack=callBack;
         String tagUrl=UrlConstance.KEY_PHONE_VERIFYKYCODE;//获取验证码入口
     }

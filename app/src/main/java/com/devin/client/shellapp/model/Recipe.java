@@ -5,9 +5,20 @@ package com.devin.client.shellapp.model;
  */
 public class Recipe {
 
+    private int id;
+
     private int imgUrl;
 
     private String name;
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getImgUrl() {
         return imgUrl;
