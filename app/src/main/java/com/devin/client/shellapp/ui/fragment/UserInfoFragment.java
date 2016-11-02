@@ -6,9 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.devin.client.shellapp.R;
+import com.devin.client.shellapp.ui.activity.LoginActivity;
 import com.devin.client.shellapp.ui.activity.StartMainActivity;
 import com.devin.client.shellapp.ui.activity.UserInfoActivity;
 import com.devin.client.shellapp.ui.activity.UserMainActivity;
@@ -20,14 +21,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserInfoFragment extends Fragment {
 
+
     @Bind(R.id.header)
-    CircleImageView header;
+    CircleImageView mHeader;
     @Bind(R.id.user_info)
-    LinearLayout userInfo;
+    RelativeLayout mUserInfo;
     @Bind(R.id.user_goods)
-    LinearLayout userGoods;
+    RelativeLayout mUserGoods;
     @Bind(R.id.start)
-    LinearLayout start;
+    RelativeLayout mStart;
 
     public static UserInfoFragment newInstance() {
         UserInfoFragment fragment = new UserInfoFragment();
@@ -54,15 +56,17 @@ public class UserInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
 
         ButterKnife.bind(this, view);
-        header.setOnClickListener(new View.OnClickListener() {
+        mHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                /*Intent intent = new Intent(getActivity(), UserInfoActivity.class);
+                getActivity().startActivity(intent);*/
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 getActivity().startActivity(intent);
             }
         });
 
-        userInfo.setOnClickListener(new View.OnClickListener() {
+        mUserInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UserMainActivity.class);
@@ -70,7 +74,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        userGoods.setOnClickListener(new View.OnClickListener() {
+        mUserGoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), UserInfoActivity.class);
@@ -78,7 +82,7 @@ public class UserInfoFragment extends Fragment {
             }
         });
 
-        start.setOnClickListener(new View.OnClickListener() {
+        mStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), StartMainActivity.class);

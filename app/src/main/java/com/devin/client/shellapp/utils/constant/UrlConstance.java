@@ -15,7 +15,7 @@ public class UrlConstance {
     public static final String ACCESSTOKEN_KEY ="accesstoken";
 
     //签约公钥，即客户端与服务器协商订的一个公钥
-    public static final String PUBLIC_KEY ="http://119.29.161.112:8086";
+    public static final String PUBLIC_KEY ="119.29.161.112:8086";
     public static final String APP_URL = "http://119.29.161.112:8086/front/barker/user/api/";
 
     //注册用户接口

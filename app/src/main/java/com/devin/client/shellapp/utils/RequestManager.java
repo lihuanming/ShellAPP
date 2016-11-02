@@ -149,7 +149,7 @@ public class RequestManager {
             }
         };
         //添加请求到请求队列中
-        addRequest(request, builder.toString());
+        addRequest(request, url);
     }
 
     /*

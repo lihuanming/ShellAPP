@@ -23,6 +23,7 @@ import com.devin.client.shellapp.context.ApplicationContext;
 import com.devin.client.shellapp.model.AnalyticalRegistInfo;
 import com.devin.client.shellapp.model.UserBaseInfo;
 import com.devin.client.shellapp.ui.fragment.UserInfoFragment;
+import com.devin.client.shellapp.utils.CleanEditText;
 import com.devin.client.shellapp.utils.HttpResponseCallBack;
 import com.devin.client.shellapp.utils.CleanEditText;
 import com.devin.client.shellapp.utils.NetworkUtils;
