@@ -128,7 +128,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
-            android:background="@drawable/noaccount_background"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/remembered_password"

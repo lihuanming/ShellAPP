@@ -59,40 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:src="@android:color/darker_gray"/>
-        <!--  <LinearLayout
-              android:id="@+id/user_info"
-              android:orientation="horizontal"
-              android:padding="10dp"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
 
-              <ImageView
-                  android:src="@mipmap/tab_home_unselect"
-                  android:layout_width="25dp"
-                  android:layout_height="25dp" />
-
-              <TextView
-                  android:paddingStart="10dp"
-                  android:padding="3dp"
-                  android:textSize="15sp"
-                  android:text="我的主页"
-                  android:layout_width="wrap_content"
-                  android:layout_height="match_parent"
-                  android:paddingLeft="10dp" />
-
-              <RelativeLayout
-                  android:padding="5dp"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content">
-                  <ImageView
-                      android:layout_alignParentEnd="true"
-                      android:src="@mipmap/arrow"
-                      android:layout_width="25dp"
-                      android:layout_height="25dp"
-                      android:layout_alignParentRight="true" />
-              </RelativeLayout>
-
-          </LinearLayout>-->
         <RelativeLayout
             android:id="@+id/user_info"
             android:padding="10dp"
@@ -129,39 +96,7 @@
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
             android:src="@android:color/darker_gray"/>
-        <!-- <LinearLayout
-             android:id="@+id/user_goods"
-             android:orientation="horizontal"
-             android:padding="10dp"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
 
-             <ImageView
-                 android:src="@mipmap/tab_me_unselect"
-                 android:layout_width="25dp"
-                 android:layout_height="25dp" />
-
-             <TextView
-                 android:paddingStart="10dp"
-                 android:padding="3dp"
-                 android:textSize="15sp"
-                 android:text="我的资料"
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:paddingLeft="10dp" />
-             <RelativeLayout
-                 android:padding="5dp"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content">
-                 <ImageView
-                     android:layout_alignParentEnd="true"
-                     android:src="@mipmap/arrow"
-                     android:layout_width="25dp"
-                     android:layout_height="25dp"
-                     android:layout_alignParentRight="true" />
-             </RelativeLayout>
-
-         </LinearLayout>-->
         <RelativeLayout
             android:id="@+id/user_goods"
             android:padding="10dp"
