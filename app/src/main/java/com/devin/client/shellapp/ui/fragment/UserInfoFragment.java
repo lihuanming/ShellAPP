@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.devin.client.shellapp.R;
 import com.devin.client.shellapp.ui.activity.LoginActivity;
@@ -30,8 +31,13 @@ public class UserInfoFragment extends Fragment {
     RelativeLayout mUserGoods;
     @Bind(R.id.start)
     RelativeLayout mStart;
+    @Bind(R.id.nickname)
+    TextView mNickname;
+    @Bind(R.id.user_Id)
+    TextView mUserId;
 
     public static UserInfoFragment newInstance() {
+
         UserInfoFragment fragment = new UserInfoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -47,6 +53,8 @@ public class UserInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+
+
     }
 
     @Override

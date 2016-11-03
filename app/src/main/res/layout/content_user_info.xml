@@ -46,7 +46,7 @@
                 android:textAlignment="center"
                 android:textSize="15sp"
                 android:textColor="@android:color/white"
-                android:text="序列号:12345678"
+                android:text="贝壳号:12345678"
                 />
         </LinearLayout>
 

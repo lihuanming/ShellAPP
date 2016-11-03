@@ -51,26 +51,23 @@ public class RequestManager {
 
     /**
      * post 请求数据
-     *
-     * @param method    提交的方法post,get,put,delete
      * @param app_url   公共的接口前缀 http://172.18.8.56:8080/front/barker/api/
      * @param tag_url   接口名称，例如：register(注册接口)
      * @param parameter 请求参数封装对象
      * @param clazz     返回数据封装对象，如果传null，则直接返回String
      * @param callback  接口回调监听
      */
-    public static <T> void post(final int method,final String app_url, final String tag_url,
+    public static <T> void post(final String app_url, final String tag_url,
                                 final HashMap<String, String> parameter, Class<T> clazz,
-                                final HttpResponseCallBack callback) {
+                                final HttpResponeCallBack callback) {
         //发送post请求服务器
-        post(method,app_url, tag_url, parameter, clazz, callback, Priority.NORMAL);
+        post(app_url, tag_url, parameter, clazz, callback, Priority.NORMAL);
     }
 
 
     /**
      * post 请求数据
      *
-     * @param method    提交的方法post,get,put,delete
      * @param app_url   路径
      * @param url       接口名称
      * @param parameter 请求参数封装对象
@@ -78,10 +75,8 @@ public class RequestManager {
      * @param callback  接口回调监听
      * @param priority  指定接口请求线程优先级
      */
-    public static <T> void post(final int method,final String app_url, final String url,
-                                final HashMap<String, String> parameter,
-                                final Class<T> clazz,
-                                final HttpResponseCallBack callback, Priority priority) {
+    public static <T> void post(final String app_url, final String url, final HashMap<String, String> parameter, final Class<T> clazz,
+                                final HttpResponeCallBack callback, Priority priority) {
         if (callback != null) {
             callback.onResponeStart(url);//回调请求开始
         }
@@ -95,7 +90,7 @@ public class RequestManager {
         // 检查当前网络是否可用
         if (!NetworkUtils.isNetworkAvailable() && android.os.Build.VERSION.SDK_INT > 10) {
             if (callback != null) {
-                callback.onFailure(url, null, 0, "网络出错···");//回调请求失败
+                callback.onFailure(url, null, 0, "网络出错");//回调请求失败
                 return;
             }
         }
@@ -106,7 +101,7 @@ public class RequestManager {
          * builder.toString()：请求的链接
          * Listener<String>：监听
          */
-        StringRequest request = new StringRequest(method, builder.toString(),
+        StringRequest request = new StringRequest(Request.Method.POST,builder.toString(),
                 new Response.Listener<String>() {
 
                     @Override

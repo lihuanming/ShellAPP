@@ -55,6 +55,7 @@
         <activity android:name=".ui.activity.ForgotPassActivity" />
         <activity android:name=".ui.activity.SearchActivity"/>
         <activity android:name=".ui.activity.SimpleSearchActivity"/>
+        <activity android:name=".ui.activity.SelectPicPopupWindow"/>
     </application>
 
 </manifest>

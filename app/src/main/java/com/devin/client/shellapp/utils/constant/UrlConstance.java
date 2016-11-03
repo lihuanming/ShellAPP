@@ -15,17 +15,19 @@ public class UrlConstance {
     public static final String ACCESSTOKEN_KEY ="accesstoken";
 
     //签约公钥，即客户端与服务器协商订的一个公钥
-    public static final String PUBLIC_KEY ="119.29.161.112:8086";
-    public static final String APP_URL = "http://119.29.161.112:8086/front/barker/user/api/";
+    public static final String PUBLIC_KEY ="http://user.tunnel.2bdata.com";
+    public static final String APP_URL = "http://user.tunnel.2bdata.com/front/";
 
     //注册用户接口
-    public static final String KEY_REGIST_INFO ="register";
+    public static final String KEY_REGIST_INFO ="http://user.tunnel.2bdata.com/front/barker/user/api/register";
 
     //登录用户接口
-    public static final String KEY_LOGIN_INFO ="login";
+    public static final String KEY_LOGIN_INFO ="http://user.tunnel.2bdata.com/front/barker/user/api/login_use_password";
 
     //获取用户基本信息
-    public static final String KEY_USER_BASE_INFO ="user";
+    public static final String KEY_USER_BASE_INFO ="user/user/api/user";
+    //重置密码
+    public static final String KEY_RET_PASSWORD="http://user.tunnel.2bdata.com/front/barker/user/api/update_password";
     //获取手机验证码
-    public static final String KEY_PHONE_VERIFYKYCODE="http://119.29.161.112:8086/front/barker/user/api/code";
+    public static final String KEY_PHONE_VERIFYKYCODE="http://user.tunnel.2bdata.com/front/barker/user/api/code";
 }

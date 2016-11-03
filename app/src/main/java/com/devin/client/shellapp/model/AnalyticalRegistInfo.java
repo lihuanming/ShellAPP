@@ -23,7 +23,7 @@ public class AnalyticalRegistInfo implements Serializable {
     private String phone;//手机号码
     private String password;//密码
     private String repassword;//确认密码
-    private String code;//验证码
+
 
     public String getRepassword() {
         return repassword;
@@ -31,14 +31,6 @@ public class AnalyticalRegistInfo implements Serializable {
 
     public void setRepassword(String repassword) {
         this.repassword = repassword;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
 

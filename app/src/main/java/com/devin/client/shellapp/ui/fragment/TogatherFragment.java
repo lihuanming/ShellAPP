@@ -113,11 +113,7 @@ public class TogatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_togather, container, false);
         ButterKnife.bind(this, rootView);
-
-       
             requestData();
-        
-
         return rootView;
     }
 
